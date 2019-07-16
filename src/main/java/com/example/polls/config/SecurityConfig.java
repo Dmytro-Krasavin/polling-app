@@ -1,7 +1,9 @@
 package com.example.polls.config;
 
-import com.example.polls.security.*;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.polls.security.CustomUserDetailsService;
+import com.example.polls.security.JwtAuthenticationEntryPoint;
+import com.example.polls.security.JwtAuthenticationFilter;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -24,23 +26,14 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
         jsr250Enabled = true,
         prePostEnabled = true
 )
+@RequiredArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final CustomUserDetailsService customUserDetailsService;
 
     private final JwtAuthenticationEntryPoint unauthorizedHandler;
 
-    @Autowired
-    public SecurityConfig(CustomUserDetailsService customUserDetailsService,
-                          JwtAuthenticationEntryPoint unauthorizedHandler) {
-        this.customUserDetailsService = customUserDetailsService;
-        this.unauthorizedHandler = unauthorizedHandler;
-    }
-
-    @Bean
-    public JwtAuthenticationFilter jwtAuthenticationFilter() {
-        return new JwtAuthenticationFilter();
-    }
+    private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
     @Override
     public void configure(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
@@ -94,6 +87,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authenticated();
 
         // Add our custom JWT security filter
-        http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
     }
 }

@@ -10,7 +10,7 @@ import com.example.polls.payload.LoginRequest;
 import com.example.polls.payload.SignUpRequest;
 import com.example.polls.service.UserService;
 import com.example.polls.validator.impl.SignUpRequestValidator;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,6 +24,7 @@ import java.net.URI;
 
 @RestController
 @RequestMapping("/api/auth")
+@RequiredArgsConstructor
 public class AuthController {
 
     private final UserService userService;
@@ -33,17 +34,6 @@ public class AuthController {
     private final JwtAuthenticationResponseFromLoginRequestConverter jwtResponseConverter;
 
     private final SignUpRequestValidator signUpRequestValidator;
-
-    @Autowired
-    public AuthController(UserService userService,
-                          JwtAuthenticationResponseFromLoginRequestConverter jwtResponseConverter,
-                          UserFromSignUpRequestConverter userConverter,
-                          SignUpRequestValidator signUpRequestValidator) {
-        this.userService = userService;
-        this.jwtResponseConverter = jwtResponseConverter;
-        this.userConverter = userConverter;
-        this.signUpRequestValidator = signUpRequestValidator;
-    }
 
     @PostMapping("/signin")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {

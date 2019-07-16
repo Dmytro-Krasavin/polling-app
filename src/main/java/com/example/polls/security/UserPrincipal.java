@@ -1,9 +1,10 @@
 package com.example.polls.security;
 
+import com.example.polls.model.Role;
 import com.example.polls.model.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -11,28 +12,30 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Getter
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class UserPrincipal implements UserDetails {
 
-    private Long id;
+    private final Long id;
 
-    private String name;
+    private final String name;
 
-    private String username;
-
-    @JsonIgnore
-    private String email;
+    private final String username;
 
     @JsonIgnore
-    private String password;
+    private final String email;
 
-    private Collection<? extends GrantedAuthority> authorities;
+    @JsonIgnore
+    private final String password;
+
+    private final Collection<? extends GrantedAuthority> authorities;
 
     static UserPrincipal create(User user) {
-        List<GrantedAuthority> authorities = user.getRoles().stream()
+        Set<Role> roles = user.getRoles();
+        List<GrantedAuthority> authorities = roles.stream()
                 .map(role -> new SimpleGrantedAuthority(role.getType().name()))
                 .collect(Collectors.toList());
 

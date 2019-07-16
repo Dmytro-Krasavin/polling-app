@@ -5,18 +5,14 @@ import com.example.polls.model.Role;
 import com.example.polls.model.RoleType;
 import com.example.polls.repository.RoleRepository;
 import com.example.polls.service.RoleService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class RoleServiceImpl implements RoleService {
 
     private final RoleRepository roleRepository;
-
-    @Autowired
-    public RoleServiceImpl(RoleRepository roleRepository) {
-        this.roleRepository = roleRepository;
-    }
 
     @Override
     public Role findByType(RoleType roleType) {

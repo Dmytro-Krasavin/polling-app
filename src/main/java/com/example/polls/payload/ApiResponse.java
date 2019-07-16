@@ -1,16 +1,14 @@
 package com.example.polls.payload;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.Setter;
+import lombok.RequiredArgsConstructor;
 
 @Getter
-@Setter
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class ApiResponse {
 
-    private Boolean success;
+    private final Boolean success;
 
-    private String message;
+    private final String message;
 
 }

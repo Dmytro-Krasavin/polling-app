@@ -6,24 +6,19 @@ import com.example.polls.model.RoleType;
 import com.example.polls.model.User;
 import com.example.polls.payload.SignUpRequest;
 import com.example.polls.service.RoleService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.util.Collections;
 
 @Component
+@RequiredArgsConstructor
 public class UserFromSignUpRequestConverter implements ModelConverter<SignUpRequest, User> {
 
     private final RoleService roleService;
 
     private final PasswordEncoder passwordEncoder;
-
-    @Autowired
-    public UserFromSignUpRequestConverter(RoleService roleService, PasswordEncoder passwordEncoder) {
-        this.roleService = roleService;
-        this.passwordEncoder = passwordEncoder;
-    }
 
     @Override
     public User convert(SignUpRequest signUpRequest) {

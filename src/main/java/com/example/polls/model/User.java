@@ -10,6 +10,7 @@ import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -48,6 +49,18 @@ public class User extends DateAudit {
     @NotBlank
     @Size(max = 100)
     private String password;
+
+    private Date lastLoginDate;
+
+    private Date lastFailedLoginDate;
+
+    private Integer failedLoginAttempts;
+
+    private Boolean locked;
+
+    private Date lockedDate;
+
+    private Boolean emailVerified;
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(

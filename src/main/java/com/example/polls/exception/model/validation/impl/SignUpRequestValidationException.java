@@ -1,4 +1,6 @@
-package com.example.polls.exception.model;
+package com.example.polls.exception.model.validation.impl;
+
+import com.example.polls.exception.model.validation.ModelValidationException;
 
 public class SignUpRequestValidationException extends ModelValidationException {
 

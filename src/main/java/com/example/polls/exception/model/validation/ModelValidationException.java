@@ -1,4 +1,4 @@
-package com.example.polls.exception.model;
+package com.example.polls.exception.model.validation;
 
 public abstract class ModelValidationException extends Exception {
 

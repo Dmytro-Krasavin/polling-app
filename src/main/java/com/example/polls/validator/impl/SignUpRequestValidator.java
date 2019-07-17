@@ -1,6 +1,6 @@
 package com.example.polls.validator.impl;
 
-import com.example.polls.exception.model.SignUpRequestValidationException;
+import com.example.polls.exception.model.validation.impl.SignUpRequestValidationException;
 import com.example.polls.payload.SignUpRequest;
 import com.example.polls.service.UserService;
 import com.example.polls.validator.ModelValidator;

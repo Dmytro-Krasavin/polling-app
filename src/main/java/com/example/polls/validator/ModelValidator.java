@@ -1,6 +1,6 @@
 package com.example.polls.validator;
 
-import com.example.polls.exception.model.ModelValidationException;
+import com.example.polls.exception.model.validation.ModelValidationException;
 
 public interface ModelValidator<T> {
 

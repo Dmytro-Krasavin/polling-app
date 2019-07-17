@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class RoleServiceImpl implements RoleService {
@@ -19,7 +21,13 @@ public class RoleServiceImpl implements RoleService {
     @Override
     @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
     public Role findByType(RoleType roleType) {
-        return roleRepository.findByType(roleType)
+        return fetchByType(roleType)
                 .orElseThrow(() -> new AppException("User Role not set"));
+    }
+
+    @Override
+    @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
+    public Optional<Role> fetchByType(RoleType roleType) {
+        return roleRepository.findByType(roleType);
     }
 }

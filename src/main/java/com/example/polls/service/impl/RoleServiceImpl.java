@@ -7,6 +7,8 @@ import com.example.polls.repository.RoleRepository;
 import com.example.polls.service.RoleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -15,6 +17,7 @@ public class RoleServiceImpl implements RoleService {
     private final RoleRepository roleRepository;
 
     @Override
+    @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
     public Role findByType(RoleType roleType) {
         return roleRepository.findByType(roleType)
                 .orElseThrow(() -> new AppException("User Role not set"));

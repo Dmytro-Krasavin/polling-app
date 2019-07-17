@@ -9,6 +9,7 @@ import com.example.polls.service.RoleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
+import org.springframework.util.Assert;
 
 import java.util.Collections;
 
@@ -22,6 +23,8 @@ public class UserFromSignUpRequestConverter implements ModelConverter<SignUpRequ
 
     @Override
     public User convert(SignUpRequest signUpRequest) {
+        Assert.notNull(signUpRequest, "SignUpRequest must not be null!");
+
         User user = new User(
                 signUpRequest.getName(),
                 signUpRequest.getUsername(),

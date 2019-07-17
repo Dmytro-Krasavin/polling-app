@@ -1,7 +1,7 @@
 package com.example.polls.converter.impl;
 
 import com.example.polls.converter.ModelConverter;
-import com.example.polls.exception.model.ModelValidationException;
+import com.example.polls.exception.model.validation.ModelValidationException;
 import com.example.polls.payload.ApiResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -33,7 +33,7 @@ public class UserPrincipal implements UserDetails {
 
     private final Collection<? extends GrantedAuthority> authorities;
 
-    static UserPrincipal create(User user) {
+    public static UserPrincipal create(User user) {
         Set<Role> roles = user.getRoles();
         List<GrantedAuthority> authorities = roles.stream()
                 .map(role -> new SimpleGrantedAuthority(role.getType().name()))

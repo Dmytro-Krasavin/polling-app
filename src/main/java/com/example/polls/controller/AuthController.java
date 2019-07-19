@@ -13,7 +13,7 @@ import com.example.polls.security.UserLoginRequestAuthenticator;
 import com.example.polls.security.handler.UserAuthenticationFailureHandler;
 import com.example.polls.security.handler.UserAuthenticationSuccessHandler;
 import com.example.polls.service.UserService;
-import com.example.polls.validator.impl.SignUpRequestValidator;
+import com.example.polls.validation.impl.SignUpRequestValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -63,12 +63,6 @@ public class AuthController {
 
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@Valid @RequestBody SignUpRequest signUpRequest) {
-        try {
-            signUpRequestValidator.validate(signUpRequest);
-        } catch (SignUpRequestValidationException e) {
-            return responseFromValidationExceptionConverter.convert(e);
-        }
-
         User user = userConverter.convert(signUpRequest);
         User savedUser = userService.save(user);
         return responseFromUserConverter.convert(savedUser);

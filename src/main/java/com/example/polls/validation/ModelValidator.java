@@ -1,4 +1,4 @@
-package com.example.polls.validator;
+package com.example.polls.validation;
 
 import com.example.polls.exception.model.validation.ModelValidationException;
 

@@ -1,9 +1,9 @@
-package com.example.polls.validator.impl;
+package com.example.polls.validation.impl;
 
 import com.example.polls.exception.model.validation.impl.SignUpRequestValidationException;
 import com.example.polls.payload.SignUpRequest;
 import com.example.polls.service.UserService;
-import com.example.polls.validator.ModelValidator;
+import com.example.polls.validation.ModelValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

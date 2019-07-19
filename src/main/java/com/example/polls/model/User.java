@@ -1,6 +1,8 @@
 package com.example.polls.model;
 
 import com.example.polls.model.audit.DateAudit;
+import com.example.polls.validation.UniqueEmail;
+import com.example.polls.validation.UniqueUsername;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -38,12 +40,14 @@ public class User extends DateAudit {
 
     @NotBlank
     @Size(max = 15)
+    @UniqueUsername
     private String username;
 
     @NaturalId
     @NotBlank
     @Size(max = 40)
     @Email
+    @UniqueEmail
     private String email;
 
     @NotBlank

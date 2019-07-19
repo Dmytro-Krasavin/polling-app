@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
+import org.springframework.util.Assert;
 
 import java.util.Date;
 
@@ -20,6 +21,8 @@ public class UserAuthenticationFailureHandler {
     private final UserService userService;
 
     public void onAuthenticationFailure(LoginRequest loginRequest) {
+        Assert.notNull(loginRequest, "LoginRequest must not be null!");
+
         String usernameOrEmail = loginRequest.getUsernameOrEmail();
         try {
             User user = userService.findByUsernameOrEmail(usernameOrEmail, usernameOrEmail);
@@ -28,7 +31,7 @@ public class UserAuthenticationFailureHandler {
             user.setLastFailedLoginDate(new Date());
             userService.save(user);
         } catch (UserNotFoundException e) {
-            logger.warn("Could not find user", e);
+            logger.warn("Could not find user: " + e.getMessage());
         }
     }
 }

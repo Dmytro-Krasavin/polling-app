@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
+import org.springframework.util.Assert;
 
 import java.util.Date;
 
@@ -20,6 +21,8 @@ public class UserAuthenticationSuccessHandler {
     private final UserService userService;
 
     public void onAuthenticationSuccess(LoginRequest loginRequest) {
+        Assert.notNull(loginRequest, "LoginRequest must not be null!");
+
         String usernameOrEmail = loginRequest.getUsernameOrEmail();
         try {
             User user = userService.findByUsernameOrEmail(usernameOrEmail, usernameOrEmail);

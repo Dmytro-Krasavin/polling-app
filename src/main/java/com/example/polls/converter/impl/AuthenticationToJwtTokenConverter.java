@@ -10,7 +10,7 @@ import org.springframework.util.Assert;
 
 @Component
 @RequiredArgsConstructor
-public class JwtTokenFromAuthenticationConverter implements ModelConverter<Authentication, JwtAuthenticationResponse> {
+public class AuthenticationToJwtTokenConverter implements ModelConverter<Authentication, JwtAuthenticationResponse> {
 
     private final JwtTokenProvider tokenProvider;
 

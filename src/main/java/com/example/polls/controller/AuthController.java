@@ -1,9 +1,9 @@
 package com.example.polls.controller;
 
-import com.example.polls.converter.impl.JwtTokenFromAuthenticationConverter;
-import com.example.polls.converter.impl.ResponseEntityFromRegisteredUserConverter;
-import com.example.polls.converter.impl.ResponseEntityFromValidationExceptionConverter;
-import com.example.polls.converter.impl.UserFromSignUpRequestConverter;
+import com.example.polls.converter.impl.AuthenticationToJwtTokenConverter;
+import com.example.polls.converter.impl.RegisteredUserToResponseEntityConverter;
+import com.example.polls.converter.impl.SignUpRequestToUserConverter;
+import com.example.polls.converter.impl.ValidationExceptionToResponseEntityConverter;
 import com.example.polls.exception.model.validation.impl.SignUpRequestValidationException;
 import com.example.polls.model.User;
 import com.example.polls.payload.JwtAuthenticationResponse;
@@ -32,15 +32,15 @@ public class AuthController {
 
     private final UserService userService;
 
-    private final UserFromSignUpRequestConverter userConverter;
-
     private final UserLoginRequestAuthenticator userLoginRequestAuthenticator;
 
-    private final JwtTokenFromAuthenticationConverter jwtTokenConverter;
+    private final SignUpRequestToUserConverter userConverter;
 
-    private final ResponseEntityFromRegisteredUserConverter responseFromUserConverter;
+    private final AuthenticationToJwtTokenConverter jwtTokenConverter;
 
-    private final ResponseEntityFromValidationExceptionConverter responseFromValidationExceptionConverter;
+    private final RegisteredUserToResponseEntityConverter responseFromUserConverter;
+
+    private final ValidationExceptionToResponseEntityConverter responseFromValidationExceptionConverter;
 
     private final SignUpRequestValidator signUpRequestValidator;
 

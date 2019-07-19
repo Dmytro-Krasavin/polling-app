@@ -15,7 +15,7 @@ import java.util.Collections;
 
 @Component
 @RequiredArgsConstructor
-public class UserFromSignUpRequestConverter implements ModelConverter<SignUpRequest, User> {
+public class SignUpRequestToUserConverter implements ModelConverter<SignUpRequest, User> {
 
     private final RoleService roleService;
 

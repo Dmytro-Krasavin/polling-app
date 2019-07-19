@@ -13,7 +13,7 @@ import java.net.URI;
 
 @Component
 @RequiredArgsConstructor
-public class ResponseEntityFromRegisteredUserConverter implements ModelConverter<User, ResponseEntity> {
+public class RegisteredUserToResponseEntityConverter implements ModelConverter<User, ResponseEntity> {
 
     @Override
     public ResponseEntity convert(User user) {

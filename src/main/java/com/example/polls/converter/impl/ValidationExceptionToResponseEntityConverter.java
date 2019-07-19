@@ -8,7 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ResponseEntityFromValidationExceptionConverter implements ModelConverter<ModelValidationException, ResponseEntity> {
+public class ValidationExceptionToResponseEntityConverter implements ModelConverter<ModelValidationException, ResponseEntity> {
 
     @Override
     public ResponseEntity convert(ModelValidationException exception) {

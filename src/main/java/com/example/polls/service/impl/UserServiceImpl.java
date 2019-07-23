@@ -19,7 +19,6 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
 
     @Override
-    @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
     public User findById(Long id) throws UserNotFoundException {
         return fetchById(id)
                 .orElseThrow(() ->
@@ -28,7 +27,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
     public User findByEmail(String email) throws UserNotFoundException {
         return fetchByEmail(email)
                 .orElseThrow(() ->
@@ -37,7 +35,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
     public User findByUsernameOrEmail(String username, String email) throws UserNotFoundException {
         return fetchByUsernameOrEmail(username, email)
                 .orElseThrow(() ->
@@ -46,7 +43,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
     public User findByUsername(String username) throws UserNotFoundException {
         return fetchByUsername(username)
                 .orElseThrow(() ->
@@ -55,53 +51,36 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
     public List<User> findByIdIn(List<Long> userIds) {
         return userRepository.findByIdIn(userIds);
     }
 
 
     @Override
-    @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
     public Optional<User> fetchById(Long id) {
         return userRepository.findById(id);
     }
 
     @Override
-    @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public Optional<User> fetchByEmail(String email) {
         return userRepository.findByEmail(email);
     }
 
     @Override
-    @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
     public Optional<User> fetchByUsernameOrEmail(String username, String email) {
         return userRepository.findByUsernameOrEmail(username, email);
     }
 
     @Override
-    @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public Optional<User> fetchByUsername(String username) {
         return userRepository.findByUsername(username);
     }
 
 
     @Override
-    @Transactional
     public User save(User user) {
         return userRepository.save(user);
-    }
-
-
-    @Override
-    @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
-    public Boolean existsByUsername(String username) {
-        return userRepository.existsByUsername(username);
-    }
-
-    @Override
-    @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
-    public Boolean existsByEmail(String email) {
-        return userRepository.existsByEmail(email);
     }
 }

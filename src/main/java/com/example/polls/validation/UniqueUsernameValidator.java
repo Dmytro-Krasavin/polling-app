@@ -1,26 +1,38 @@
 package com.example.polls.validation;
 
+import com.example.polls.model.User;
 import com.example.polls.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
-@Component
-public class UniqueUsernameValidator implements ConstraintValidator<UniqueUsername, String> {
+public class UniqueUsernameValidator implements ConstraintValidator<UniqueUsername, User> {
 
     private UserService userService;
 
+    private String message;
+
     @Override
     public void initialize(UniqueUsername constraintAnnotation) {
-        SpringBeanAutowiringSupport.processInjectionBasedOnCurrentContext(this);
+        message = constraintAnnotation.message();
     }
 
     @Override
-    public boolean isValid(String userName, ConstraintValidatorContext cxt) {
-        return !userService.existsByUsername(userName);
+    public boolean isValid(User user, ConstraintValidatorContext context) {
+        boolean usernameIsNotUnique = userService.fetchByUsername(user.getUsername())
+                .map(User::getId)
+                .filter(userId -> !userId.equals(user.getId()))
+                .isPresent();
+
+        if (usernameIsNotUnique) {
+            context.disableDefaultConstraintViolation();
+            context.buildConstraintViolationWithTemplate(message)
+                    .addPropertyNode("username")
+                    .addConstraintViolation();
+            return false;
+        }
+        return true;
     }
 
     @Autowired

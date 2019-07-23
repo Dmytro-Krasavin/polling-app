@@ -1,26 +1,19 @@
 package com.example.polls.config;
 
-import lombok.RequiredArgsConstructor;
-import org.hibernate.validator.HibernateValidator;
-import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
+import org.springframework.boot.autoconfigure.orm.jpa.HibernatePropertiesCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.validation.beanvalidation.SpringConstraintValidatorFactory;
+import org.springframework.context.annotation.Lazy;
 
-import javax.validation.Validation;
 import javax.validation.Validator;
-import javax.validation.ValidatorFactory;
 
 @Configuration
-@RequiredArgsConstructor
+@Lazy
 public class ValidationConfig {
 
     @Bean
-    public Validator validator(final AutowireCapableBeanFactory autowireCapableBeanFactory) {
-        ValidatorFactory validatorFactory = Validation.byProvider(HibernateValidator.class)
-                .configure().constraintValidatorFactory(new SpringConstraintValidatorFactory(autowireCapableBeanFactory))
-                .buildValidatorFactory();
-        Validator validator = validatorFactory.getValidator();
-        return validator;
+    @Lazy
+    public HibernatePropertiesCustomizer hibernatePropertiesCustomizer(final Validator validator) {
+        return hibernateProperties -> hibernateProperties.put("javax.persistence.validation.factory", validator);
     }
 }

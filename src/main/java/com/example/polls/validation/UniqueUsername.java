@@ -6,7 +6,7 @@ import java.lang.annotation.*;
 
 @Documented
 @Constraint(validatedBy = UniqueUsernameValidator.class)
-@Target({ElementType.METHOD, ElementType.FIELD})
+@Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface UniqueUsername {
 
@@ -15,4 +15,5 @@ public @interface UniqueUsername {
     Class<?>[] groups() default {};
 
     Class<? extends Payload>[] payload() default {};
+
 }

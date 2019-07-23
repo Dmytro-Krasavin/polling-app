@@ -1,26 +1,38 @@
 package com.example.polls.validation;
 
+import com.example.polls.model.User;
 import com.example.polls.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
-@Component
-public class UniqueEmailValidator implements ConstraintValidator<UniqueEmail, String> {
+public class UniqueEmailValidator implements ConstraintValidator<UniqueEmail, User> {
 
     private UserService userService;
 
+    private String message;
+
     @Override
     public void initialize(UniqueEmail constraintAnnotation) {
-        SpringBeanAutowiringSupport.processInjectionBasedOnCurrentContext(this);
+        message = constraintAnnotation.message();
     }
 
     @Override
-    public boolean isValid(String email, ConstraintValidatorContext context) {
-        return !userService.existsByEmail(email);
+    public boolean isValid(User user, ConstraintValidatorContext context) {
+        boolean emailIsNotUnique = userService.fetchByEmail(user.getEmail())
+                .map(User::getId)
+                .filter(userId -> !userId.equals(user.getId()))
+                .isPresent();
+
+        if (emailIsNotUnique) {
+            context.disableDefaultConstraintViolation();
+            context.buildConstraintViolationWithTemplate(message)
+                    .addPropertyNode("email")
+                    .addConstraintViolation();
+            return false;
+        }
+        return true;
     }
 
     @Autowired

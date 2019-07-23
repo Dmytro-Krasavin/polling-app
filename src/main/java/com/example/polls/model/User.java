@@ -28,6 +28,8 @@ import java.util.Set;
 @Getter
 @Setter
 @NoArgsConstructor
+@UniqueUsername
+@UniqueEmail
 public class User extends DateAudit {
 
     @Id
@@ -40,14 +42,12 @@ public class User extends DateAudit {
 
     @NotBlank
     @Size(max = 15)
-    @UniqueUsername
     private String username;
 
     @NaturalId
     @NotBlank
     @Size(max = 40)
     @Email
-    @UniqueEmail
     private String email;
 
     @NotBlank

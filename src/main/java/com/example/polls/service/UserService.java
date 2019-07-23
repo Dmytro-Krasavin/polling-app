@@ -28,8 +28,4 @@ public interface UserService {
 
     User save(User user);
 
-    Boolean existsByUsername(String username);
-
-    Boolean existsByEmail(String email);
-
 }

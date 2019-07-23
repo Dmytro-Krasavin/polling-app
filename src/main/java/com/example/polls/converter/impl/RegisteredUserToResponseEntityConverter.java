@@ -16,7 +16,7 @@ import java.net.URI;
 public class RegisteredUserToResponseEntityConverter implements ModelConverter<User, ResponseEntity> {
 
     @Override
-    public ResponseEntity convert(User user) {
+    public ResponseEntity<ApiResponse> convert(User user) {
         Assert.notNull(user, "User must not be null!");
         String username = user.getUsername();
         URI location = ServletUriComponentsBuilder

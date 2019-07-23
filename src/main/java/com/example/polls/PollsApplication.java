@@ -15,12 +15,12 @@ import java.util.TimeZone;
 })
 public class PollsApplication {
 
-    @PostConstruct
-    void init() {
-        TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
-    }
-
     public static void main(String[] args) {
         SpringApplication.run(PollsApplication.class, args);
+    }
+
+    @PostConstruct
+    private void init() {
+        TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
     }
 }

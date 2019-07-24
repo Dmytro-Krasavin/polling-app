@@ -1,6 +1,6 @@
-package com.example.polls.converter.impl;
+package com.example.polls.util.converter.impl;
 
-import com.example.polls.converter.ModelConverter;
+import com.example.polls.util.converter.ModelConverter;
 import com.example.polls.model.Role;
 import com.example.polls.model.RoleType;
 import com.example.polls.model.User;

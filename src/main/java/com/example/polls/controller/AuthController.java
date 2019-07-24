@@ -1,8 +1,8 @@
 package com.example.polls.controller;
 
-import com.example.polls.converter.impl.AuthenticationToJwtTokenConverter;
-import com.example.polls.converter.impl.RegisteredUserToResponseEntityConverter;
-import com.example.polls.converter.impl.SignUpRequestToUserConverter;
+import com.example.polls.util.converter.impl.AuthenticationToJwtTokenConverter;
+import com.example.polls.util.converter.impl.RegisteredUserToResponseEntityConverter;
+import com.example.polls.util.converter.impl.SignUpRequestToUserConverter;
 import com.example.polls.model.User;
 import com.example.polls.payload.request.LoginRequest;
 import com.example.polls.payload.request.SignUpRequest;

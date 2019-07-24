@@ -1,4 +1,4 @@
-package com.example.polls.converter;
+package com.example.polls.util.converter;
 
 import org.springframework.core.convert.converter.Converter;
 

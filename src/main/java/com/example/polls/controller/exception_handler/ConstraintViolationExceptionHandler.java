@@ -1,6 +1,6 @@
 package com.example.polls.controller.exception_handler;
 
-import com.example.polls.converter.impl.ConstraintViolationExceptionToErrorMapConverter;
+import com.example.polls.util.converter.impl.ConstraintViolationExceptionToErrorMapConverter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -2,7 +2,7 @@ package com.example.polls.security.handler;
 
 import com.example.polls.exception.model.UserNotFoundException;
 import com.example.polls.model.User;
-import com.example.polls.payload.LoginRequest;
+import com.example.polls.payload.request.LoginRequest;
 import com.example.polls.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;

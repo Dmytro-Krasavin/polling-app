@@ -2,7 +2,7 @@ package com.example.polls.converter.impl;
 
 import com.example.polls.converter.ModelConverter;
 import com.example.polls.model.User;
-import com.example.polls.payload.ApiResponse;
+import com.example.polls.payload.response.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;

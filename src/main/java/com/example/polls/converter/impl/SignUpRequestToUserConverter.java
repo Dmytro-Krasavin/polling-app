@@ -4,7 +4,7 @@ import com.example.polls.converter.ModelConverter;
 import com.example.polls.model.Role;
 import com.example.polls.model.RoleType;
 import com.example.polls.model.User;
-import com.example.polls.payload.SignUpRequest;
+import com.example.polls.payload.request.SignUpRequest;
 import com.example.polls.service.RoleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;

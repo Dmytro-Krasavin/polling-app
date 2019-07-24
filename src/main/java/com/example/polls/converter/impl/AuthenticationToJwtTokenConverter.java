@@ -1,7 +1,7 @@
 package com.example.polls.converter.impl;
 
 import com.example.polls.converter.ModelConverter;
-import com.example.polls.payload.JwtAuthenticationResponse;
+import com.example.polls.payload.response.JwtAuthenticationResponse;
 import com.example.polls.security.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;

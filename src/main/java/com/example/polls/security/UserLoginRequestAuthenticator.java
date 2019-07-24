@@ -1,6 +1,6 @@
 package com.example.polls.security;
 
-import com.example.polls.payload.LoginRequest;
+import com.example.polls.payload.request.LoginRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

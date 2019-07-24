@@ -4,10 +4,10 @@ import com.example.polls.converter.impl.AuthenticationToJwtTokenConverter;
 import com.example.polls.converter.impl.RegisteredUserToResponseEntityConverter;
 import com.example.polls.converter.impl.SignUpRequestToUserConverter;
 import com.example.polls.model.User;
-import com.example.polls.payload.ApiResponse;
-import com.example.polls.payload.JwtAuthenticationResponse;
-import com.example.polls.payload.LoginRequest;
-import com.example.polls.payload.SignUpRequest;
+import com.example.polls.payload.response.ApiResponse;
+import com.example.polls.payload.response.JwtAuthenticationResponse;
+import com.example.polls.payload.request.LoginRequest;
+import com.example.polls.payload.request.SignUpRequest;
 import com.example.polls.security.UserLoginRequestAuthenticator;
 import com.example.polls.security.handler.UserAuthenticationFailureHandler;
 import com.example.polls.security.handler.UserAuthenticationSuccessHandler;
@@ -56,7 +56,7 @@ public class AuthController {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<ApiResponse> registerUser(@Valid @RequestBody SignUpRequest signUpRequest) {
+    public ResponseEntity<ApiResponse> registerUser(@RequestBody SignUpRequest signUpRequest) {
         User user = userConverter.convert(signUpRequest);
         User savedUser = userService.save(user);
         return responseFromUserConverter.convert(savedUser);

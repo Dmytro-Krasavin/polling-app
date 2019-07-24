@@ -1,7 +1,7 @@
 package com.example.polls.security.filter;
 
-import com.example.polls.security.JwtTokenProvider;
-import com.example.polls.service.impl.CustomUserDetailsServiceImpl;
+import com.example.polls.security.service.TokenProvider;
+import com.example.polls.security.service.impl.CustomUserDetailsServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,7 +28,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private static final Logger logger = LoggerFactory.getLogger(JwtAuthenticationFilter.class);
 
-    private final JwtTokenProvider tokenProvider;
+    private final TokenProvider tokenProvider;
 
     private final CustomUserDetailsServiceImpl userDetailsService;
 
@@ -37,7 +37,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         try {
             String jwt = getJwtFromRequest(request);
             if (StringUtils.hasText(jwt) && tokenProvider.validateToken(jwt)) {
-                Long userId = tokenProvider.getUserIdFromJWT(jwt);
+                Long userId = tokenProvider.getUserIdFromToken(jwt);
 
                 UserDetails userDetails = userDetailsService.loadUserById(userId);
                 Collection<? extends GrantedAuthority> authorities = userDetails.getAuthorities();

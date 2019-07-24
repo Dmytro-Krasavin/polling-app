@@ -2,7 +2,7 @@ package com.example.polls.config;
 
 import com.example.polls.security.JwtAuthenticationEntryPoint;
 import com.example.polls.security.filter.JwtAuthenticationFilter;
-import com.example.polls.service.CustomUserDetailsService;
+import com.example.polls.security.service.CustomUserDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

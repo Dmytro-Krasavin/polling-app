@@ -1,4 +1,4 @@
-package com.example.polls.service;
+package com.example.polls.security.service;
 
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

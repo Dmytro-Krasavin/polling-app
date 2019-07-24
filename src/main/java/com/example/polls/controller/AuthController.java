@@ -4,13 +4,13 @@ import com.example.polls.converter.impl.AuthenticationToJwtTokenConverter;
 import com.example.polls.converter.impl.RegisteredUserToResponseEntityConverter;
 import com.example.polls.converter.impl.SignUpRequestToUserConverter;
 import com.example.polls.model.User;
-import com.example.polls.payload.response.ApiResponse;
-import com.example.polls.payload.response.JwtAuthenticationResponse;
 import com.example.polls.payload.request.LoginRequest;
 import com.example.polls.payload.request.SignUpRequest;
-import com.example.polls.security.UserLoginRequestAuthenticator;
+import com.example.polls.payload.response.ApiResponse;
+import com.example.polls.payload.response.JwtAuthenticationResponse;
 import com.example.polls.security.handler.UserAuthenticationFailureHandler;
 import com.example.polls.security.handler.UserAuthenticationSuccessHandler;
+import com.example.polls.security.service.UserAuthenticator;
 import com.example.polls.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -30,7 +30,7 @@ public class AuthController {
 
     private final UserService userService;
 
-    private final UserLoginRequestAuthenticator userLoginRequestAuthenticator;
+    private final UserAuthenticator<LoginRequest> userAuthenticator;
 
     private final SignUpRequestToUserConverter userConverter;
 
@@ -45,7 +45,7 @@ public class AuthController {
     @PostMapping("/signin")
     public ResponseEntity<JwtAuthenticationResponse> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
         try {
-            Authentication authentication = userLoginRequestAuthenticator.authenticate(loginRequest);
+            Authentication authentication = userAuthenticator.authenticate(loginRequest);
             JwtAuthenticationResponse jwtResponse = jwtTokenConverter.convert(authentication);
             successHandler.onAuthenticationSuccess(loginRequest);
             return ResponseEntity.ok(jwtResponse);

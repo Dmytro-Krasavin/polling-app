@@ -19,6 +19,6 @@ public class ConstraintViolationExceptionHandler {
     @ExceptionHandler(ConstraintViolationException.class)
     public ResponseEntity handle(ConstraintViolationException ex) {
         Map<String, String> errorMap = errorMapConverter.convert(ex);
-        return new ResponseEntity<>(errorMap, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(errorMap, HttpStatus.CONFLICT);
     }
 }

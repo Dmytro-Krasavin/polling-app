@@ -1,18 +1,18 @@
 package com.example.polls.payload.request;
 
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 
 import javax.validation.constraints.NotBlank;
 
 @Getter
-@RequiredArgsConstructor
+@Setter
 public class LoginRequest {
 
     @NotBlank
-    private final String usernameOrEmail;
+    private String usernameOrEmail;
 
     @NotBlank
-    private final String password;
+    private String password;
 
 }

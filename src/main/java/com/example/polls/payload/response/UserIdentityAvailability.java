@@ -5,10 +5,8 @@ import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-public class ApiResponse {
+public class UserIdentityAvailability {
 
-    private final boolean success;
-
-    private final String message;
+    private final boolean available;
 
 }

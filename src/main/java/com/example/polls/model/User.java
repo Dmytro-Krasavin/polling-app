@@ -17,14 +17,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(uniqueConstraints = {
-        @UniqueConstraint(columnNames = {
-                "username"
-        }),
-        @UniqueConstraint(columnNames = {
-                "email"
-        })
-})
 @Getter
 @Setter
 @NoArgsConstructor
@@ -42,12 +34,14 @@ public class User extends DateAudit {
 
     @NotBlank
     @Size(max = 15)
+    @Column(unique = true)
     private String username;
 
     @NaturalId
     @NotBlank
     @Size(max = 40)
     @Email
+    @Column(unique = true)
     private String email;
 
     @NotBlank

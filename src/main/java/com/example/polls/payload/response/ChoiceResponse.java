@@ -5,10 +5,12 @@ import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-public class ApiResponse {
+public class ChoiceResponse {
 
-    private final boolean success;
+    private final long id;
 
-    private final String message;
+    private final String text;
+
+    private final long voteCount;
 
 }

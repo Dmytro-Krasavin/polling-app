@@ -1,8 +1,5 @@
 package com.example.polls.controller;
 
-import com.example.polls.util.converter.impl.AuthenticationToJwtTokenConverter;
-import com.example.polls.util.converter.impl.RegisteredUserToResponseEntityConverter;
-import com.example.polls.util.converter.impl.SignUpRequestToUserConverter;
 import com.example.polls.model.User;
 import com.example.polls.payload.request.LoginRequest;
 import com.example.polls.payload.request.SignUpRequest;
@@ -12,6 +9,9 @@ import com.example.polls.security.handler.UserAuthenticationFailureHandler;
 import com.example.polls.security.handler.UserAuthenticationSuccessHandler;
 import com.example.polls.security.service.UserAuthenticator;
 import com.example.polls.service.UserService;
+import com.example.polls.util.converter.impl.AuthenticationToJwtTokenConverter;
+import com.example.polls.util.converter.impl.RegisteredUserToResponseEntityConverter;
+import com.example.polls.util.converter.impl.SignUpRequestToUserConverter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;

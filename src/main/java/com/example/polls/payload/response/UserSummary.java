@@ -5,10 +5,12 @@ import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-public class ApiResponse {
+public class UserSummary {
 
-    private final boolean success;
+    private final Long id;
 
-    private final String message;
+    private final String username;
+
+    private final String name;
 
 }

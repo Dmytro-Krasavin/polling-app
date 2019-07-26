@@ -13,7 +13,8 @@ import com.example.polls.repository.VoteRepository;
 import com.example.polls.security.UserPrincipal;
 import com.example.polls.service.PollService;
 import com.example.polls.util.AppConstants;
-import com.example.polls.util.converter.PollModelMapper;
+import com.example.polls.util.converter.request.PollRequestToPollConverter;
+import com.example.polls.util.converter.response.PollToPollResponseConverter;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,7 +42,8 @@ public class PollServiceImpl implements PollService {
     private final PollRepository pollRepository;
     private final VoteRepository voteRepository;
     private final UserRepository userRepository;
-    private final PollModelMapper modelMapper;
+    private final PollRequestToPollConverter pollRequestConverter;
+    private final PollToPollResponseConverter pollResponseConverter;
 
     public PagedResponse<PollResponse> getAllPolls(UserPrincipal currentUser, int page, int size) {
         validatePageNumberAndSize(page, size);
@@ -62,7 +64,7 @@ public class PollServiceImpl implements PollService {
         List<PollResponse> pollResponses = pollPage.map(poll -> {
                     Long choiceId = pollUserVoteMap == null ? null : pollUserVoteMap.get(poll.getId());
                     User creator = creatorMap.get(poll.getCreatedBy());
-                    return modelMapper.mapPollToPollResponse(poll, choiceVoteCountMap, creator, choiceId);
+                    return pollResponseConverter.convert(poll, choiceVoteCountMap, creator, choiceId);
                 }
         ).getContent();
 
@@ -89,7 +91,7 @@ public class PollServiceImpl implements PollService {
 
         List<PollResponse> pollResponses = pollPage.map(poll -> {
                     Long userVote = pollUserVoteMap == null ? null : pollUserVoteMap.get(poll.getId());
-                    return modelMapper.mapPollToPollResponse(poll, choiceVoteCountMap, user, userVote);
+                    return pollResponseConverter.convert(poll, choiceVoteCountMap, user, userVote);
                 }
         ).getContent();
 
@@ -123,7 +125,7 @@ public class PollServiceImpl implements PollService {
                 .map(poll -> {
                             User creator = creatorMap.get(poll.getCreatedBy());
                             Long userVote = pollUserVoteMap == null ? null : pollUserVoteMap.get(poll.getId());
-                            return modelMapper.mapPollToPollResponse(poll, choiceVoteCountMap, creator, userVote);
+                            return pollResponseConverter.convert(poll, choiceVoteCountMap, creator, userVote);
                         }
                 ).collect(Collectors.toList());
 
@@ -132,7 +134,7 @@ public class PollServiceImpl implements PollService {
 
 
     public Poll createPoll(PollRequest pollRequest) {
-        final Poll poll = modelMapper.mapPollRequestToPoll(pollRequest);
+        final Poll poll = pollRequestConverter.convert(pollRequest);
         return pollRepository.save(poll);
     }
 
@@ -159,7 +161,7 @@ public class PollServiceImpl implements PollService {
         }
 
         Long choiceId = userVote != null ? userVote.getChoice().getId() : null;
-        return modelMapper.mapPollToPollResponse(poll, choiceVotesMap, creator, choiceId);
+        return pollResponseConverter.convert(poll, choiceVotesMap, creator, choiceId);
     }
 
     public PollResponse castVoteAndGetUpdatedPoll(Long pollId, VoteRequest voteRequest, UserPrincipal currentUser) {
@@ -202,7 +204,7 @@ public class PollServiceImpl implements PollService {
         User creator = userRepository.findById(creatorId)
                 .orElseThrow(() -> new ResourceNotFoundException("User", "id", creatorId));
 
-        return modelMapper.mapPollToPollResponse(poll, choiceVotesMap, creator, vote.getChoice().getId());
+        return pollResponseConverter.convert(poll, choiceVotesMap, creator, vote.getChoice().getId());
     }
 
 

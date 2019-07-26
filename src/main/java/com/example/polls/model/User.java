@@ -67,10 +67,11 @@ public class User extends DateAudit {
     )
     private Set<Role> roles = new HashSet<>();
 
-    public User(String name, String username, String email, String password) {
+    public User(String name, String username, String email, String password, Set<Role> roles) {
         this.name = name;
         this.username = username;
         this.email = email;
         this.password = password;
+        this.roles = roles;
     }
 }

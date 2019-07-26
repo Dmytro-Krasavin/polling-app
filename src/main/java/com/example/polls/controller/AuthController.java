@@ -7,11 +7,11 @@ import com.example.polls.payload.response.ApiResponse;
 import com.example.polls.payload.response.JwtAuthenticationResponse;
 import com.example.polls.security.handler.UserAuthenticationFailureHandler;
 import com.example.polls.security.handler.UserAuthenticationSuccessHandler;
+import com.example.polls.security.service.TokenProvider;
 import com.example.polls.security.service.UserAuthenticator;
 import com.example.polls.service.UserService;
-import com.example.polls.util.converter.impl.AuthenticationToJwtTokenConverter;
-import com.example.polls.util.converter.impl.RegisteredUserToResponseEntityConverter;
-import com.example.polls.util.converter.impl.SignUpRequestToUserConverter;
+import com.example.polls.util.converter.response.RegisteredUserToResponseEntityConverter;
+import com.example.polls.util.converter.request.SignUpRequestToUserConverter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -34,7 +34,7 @@ public class AuthController {
 
     private final SignUpRequestToUserConverter userConverter;
 
-    private final AuthenticationToJwtTokenConverter jwtTokenConverter;
+    private final TokenProvider tokenProvider;
 
     private final RegisteredUserToResponseEntityConverter responseFromUserConverter;
 
@@ -46,7 +46,8 @@ public class AuthController {
     public ResponseEntity<JwtAuthenticationResponse> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
         try {
             Authentication authentication = userAuthenticator.authenticate(loginRequest);
-            JwtAuthenticationResponse jwtResponse = jwtTokenConverter.convert(authentication);
+            String jwt = tokenProvider.generateToken(authentication);
+            JwtAuthenticationResponse jwtResponse = new JwtAuthenticationResponse(jwt);
             successHandler.onAuthenticationSuccess(loginRequest);
             return ResponseEntity.ok(jwtResponse);
         } catch (BadCredentialsException e) {

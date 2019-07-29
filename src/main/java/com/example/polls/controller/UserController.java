@@ -1,6 +1,6 @@
 package com.example.polls.controller;
 
-import com.example.polls.exception.response.ResourceNotFoundException;
+import com.example.polls.exception.ResourceNotFoundException;
 import com.example.polls.model.User;
 import com.example.polls.payload.response.*;
 import com.example.polls.security.UserPrincipal;

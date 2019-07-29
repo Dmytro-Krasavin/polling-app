@@ -1,7 +1,7 @@
 package com.example.polls.service.impl;
 
-import com.example.polls.exception.response.BadRequestException;
-import com.example.polls.exception.response.ResourceNotFoundException;
+import com.example.polls.exception.BadRequestException;
+import com.example.polls.exception.ResourceNotFoundException;
 import com.example.polls.model.*;
 import com.example.polls.payload.request.PollRequest;
 import com.example.polls.payload.request.VoteRequest;

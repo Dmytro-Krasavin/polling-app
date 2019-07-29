@@ -1,6 +1,6 @@
 package com.example.polls.service.impl;
 
-import com.example.polls.exception.response.AppException;
+import com.example.polls.exception.AppException;
 import com.example.polls.model.Role;
 import com.example.polls.model.RoleType;
 import com.example.polls.repository.RoleRepository;

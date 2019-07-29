@@ -20,7 +20,7 @@ public class UniqueEmailValidator implements ConstraintValidator<UniqueEmail, Us
 
     @Override
     public boolean isValid(User user, ConstraintValidatorContext context) {
-        boolean emailIsNotUnique = userService.fetchByEmail(user.getEmail())
+        boolean emailIsNotUnique = userService.findByEmail(user.getEmail())
                 .map(User::getId)
                 .filter(userId -> !userId.equals(user.getId()))
                 .isPresent();

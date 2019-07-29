@@ -137,7 +137,7 @@ public class PollServiceImpl implements PollService {
 
     @Override
     public Poll createPoll(PollRequest pollRequest) {
-        final Poll poll = pollRequestConverter.convert(pollRequest);
+        Poll poll = pollRequestConverter.convert(pollRequest);
         return pollRepository.save(poll);
     }
 

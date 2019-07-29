@@ -20,7 +20,7 @@ public class UniqueUsernameValidator implements ConstraintValidator<UniqueUserna
 
     @Override
     public boolean isValid(User user, ConstraintValidatorContext context) {
-        boolean usernameIsNotUnique = userService.fetchByUsername(user.getUsername())
+        boolean usernameIsNotUnique = userService.findByUsername(user.getUsername())
                 .map(User::getId)
                 .filter(userId -> !userId.equals(user.getId()))
                 .isPresent();

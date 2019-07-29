@@ -42,7 +42,7 @@ public class UserController {
 
     @GetMapping("/users/{username}")
     public UserProfile getUserProfile(@PathVariable(value = "username") String username) {
-        User user = userService.fetchByUsername(username)
+        User user = userService.findByUsername(username)
                 .orElseThrow(() -> new ResourceNotFoundException("User", "username", username));
         long pollCount = pollService.countByCreatedBy(user.getId());
         long voteCount = voteService.countByUserId(user.getId());

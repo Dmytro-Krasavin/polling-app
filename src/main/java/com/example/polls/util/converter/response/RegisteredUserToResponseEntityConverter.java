@@ -18,6 +18,7 @@ public class RegisteredUserToResponseEntityConverter implements ModelConverter<U
     @Override
     public ResponseEntity<ApiResponse> convert(User user) {
         Assert.notNull(user, "User must not be null!");
+
         String username = user.getUsername();
         URI location = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path("/api/users/{username}")

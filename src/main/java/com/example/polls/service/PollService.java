@@ -21,4 +21,6 @@ public interface PollService {
 
     PollResponse castVoteAndGetUpdatedPoll(Long pollId, VoteRequest voteRequest, UserPrincipal currentUser);
 
+    long countByCreatedBy(Long userId);
+
 }

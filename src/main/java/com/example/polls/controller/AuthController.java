@@ -29,17 +29,11 @@ import javax.validation.Valid;
 public class AuthController {
 
     private final UserService userService;
-
     private final UserAuthenticator<LoginRequest> userAuthenticator;
-
     private final SignUpRequestToUserConverter userConverter;
-
     private final TokenProvider tokenProvider;
-
     private final RegisteredUserToResponseEntityConverter responseFromUserConverter;
-
     private final UserAuthenticationSuccessHandler successHandler;
-
     private final UserAuthenticationFailureHandler failureHandler;
 
     @PostMapping("/signin")

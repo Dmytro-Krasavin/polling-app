@@ -6,6 +6,7 @@ import com.example.polls.payload.request.PollLength;
 import com.example.polls.payload.request.PollRequest;
 import com.example.polls.util.converter.ModelConverter;
 import org.springframework.stereotype.Component;
+import org.springframework.util.Assert;
 
 import java.time.Duration;
 import java.time.Instant;
@@ -15,6 +16,8 @@ public class PollRequestToPollConverter implements ModelConverter<PollRequest, P
 
     @Override
     public Poll convert(PollRequest pollRequest) {
+        Assert.notNull(pollRequest, "PollRequest must not be null!");
+
         Poll poll = new Poll();
         poll.setQuestion(pollRequest.getQuestion());
 

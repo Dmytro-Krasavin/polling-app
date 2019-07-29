@@ -45,6 +45,7 @@ public class PollServiceImpl implements PollService {
     private final PollRequestToPollConverter pollRequestConverter;
     private final PollToPollResponseConverter pollResponseConverter;
 
+    @Override
     public PagedResponse<PollResponse> getAllPolls(UserPrincipal currentUser, int page, int size) {
         validatePageNumberAndSize(page, size);
 
@@ -71,6 +72,7 @@ public class PollServiceImpl implements PollService {
         return createPagedResponse(pollPage, pollResponses);
     }
 
+    @Override
     public PagedResponse<PollResponse> getPollsCreatedBy(String username, UserPrincipal currentUser, int page, int size) {
         validatePageNumberAndSize(page, size);
 
@@ -98,6 +100,7 @@ public class PollServiceImpl implements PollService {
         return createPagedResponse(pollPage, pollResponses);
     }
 
+    @Override
     public PagedResponse<PollResponse> getPollsVotedBy(String username, UserPrincipal currentUser, int page, int size) {
         validatePageNumberAndSize(page, size);
 
@@ -132,12 +135,13 @@ public class PollServiceImpl implements PollService {
         return createPagedResponse(userVotedPollIds, pollResponses);
     }
 
-
+    @Override
     public Poll createPoll(PollRequest pollRequest) {
         final Poll poll = pollRequestConverter.convert(pollRequest);
         return pollRepository.save(poll);
     }
 
+    @Override
     public PollResponse getPollById(Long pollId, UserPrincipal currentUser) {
         Poll poll = pollRepository.findById(pollId)
                 .orElseThrow(() -> new ResourceNotFoundException("Poll", "id", pollId));
@@ -164,6 +168,7 @@ public class PollServiceImpl implements PollService {
         return pollResponseConverter.convert(poll, choiceVotesMap, creator, choiceId);
     }
 
+    @Override
     public PollResponse castVoteAndGetUpdatedPoll(Long pollId, VoteRequest voteRequest, UserPrincipal currentUser) {
         User user = userRepository.getOne(currentUser.getId());
         Poll poll = pollRepository.findById(pollId)
@@ -207,6 +212,10 @@ public class PollServiceImpl implements PollService {
         return pollResponseConverter.convert(poll, choiceVotesMap, creator, vote.getChoice().getId());
     }
 
+    @Override
+    public long countByCreatedBy(Long userId) {
+        return pollRepository.countByCreatedBy(userId);
+    }
 
     private void validatePageNumberAndSize(int page, int size) {
         if (page < 0) {

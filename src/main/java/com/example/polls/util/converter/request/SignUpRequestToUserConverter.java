@@ -26,7 +26,7 @@ public class SignUpRequestToUserConverter implements ModelConverter<SignUpReques
         Assert.notNull(signUpRequest, "SignUpRequest must not be null!");
 
         String encodedPassword = passwordEncoder.encode(signUpRequest.getPassword());
-        Role userRole = roleService.findByType(RoleType.USER);
+        Role userRole = roleService.findByType(RoleType.ROLE_USER);
         return new User(
                 signUpRequest.getName(),
                 signUpRequest.getUsername(),

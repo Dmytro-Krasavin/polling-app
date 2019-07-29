@@ -86,7 +86,7 @@ export const getCurrentUser = () => {
   }
 
   return request({
-    url: `${API_BASE_URL}/users/me`,
+    url: `${API_BASE_URL}/user/me`,
     method: 'GET'
   });
 };

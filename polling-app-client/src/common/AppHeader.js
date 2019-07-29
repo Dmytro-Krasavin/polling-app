@@ -8,11 +8,11 @@ const Header = Layout.Header;
 
 class AppHeader extends Component {
 
-  handleMenuClick({ key }) {
+  handleMenuClick = ({ key }) => {
     if (key === 'logout') {
       this.props.onLogout();
     }
-  }
+  };
 
   render() {
     let menuItems;
@@ -95,7 +95,7 @@ const ProfileDropdownMenu = (props) => {
       </a>
     </Dropdown>
   );
-}
+};
 
 
 export default withRouter(AppHeader);

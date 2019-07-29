@@ -15,7 +15,7 @@ public class PollResponse {
 
     private final String question;
 
-    private final List<ChoiceResponse> choiceResponses;
+    private final List<ChoiceResponse> choices;
 
     private final UserSummary createdBy;
 

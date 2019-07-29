@@ -57,7 +57,7 @@ class App extends Component {
     this.loadCurrentUser();
   };
 
-  handleLogout(redirectTo = '/', notificationType = 'success', description = 'You\'re successfully logged out.') {
+  handleLogout = (redirectTo = '/', notificationType = 'success', description = 'You\'re successfully logged out.') => {
     localStorage.removeItem(ACCESS_TOKEN);
 
     this.setState({
@@ -71,7 +71,7 @@ class App extends Component {
       message: 'Polling App',
       description: description,
     });
-  }
+  };
 
   handleLogin = () => {
     notification.success({

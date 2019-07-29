@@ -17,6 +17,7 @@
   },
   "devDependencies": {
     "babel-plugin-import": "^1.6.5",
+    "customize-cra": "^0.4.1",
     "react-app-rewire-less": "^2.1.0",
     "react-app-rewired": "^2.1.3"
   },

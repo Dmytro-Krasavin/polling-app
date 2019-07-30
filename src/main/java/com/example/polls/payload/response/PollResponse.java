@@ -7,6 +7,8 @@ import lombok.RequiredArgsConstructor;
 import java.time.Instant;
 import java.util.List;
 
+import static com.fasterxml.jackson.annotation.JsonInclude.Include;
+
 @Getter
 @RequiredArgsConstructor
 public class PollResponse {
@@ -25,7 +27,7 @@ public class PollResponse {
 
     private final boolean expired;
 
-    @JsonInclude(JsonInclude.Include.NON_NULL)
+    @JsonInclude(Include.NON_NULL)
     private final Long selectedChoice;
 
     private final Long totalVotes;

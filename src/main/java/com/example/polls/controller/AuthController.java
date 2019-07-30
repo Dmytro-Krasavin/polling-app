@@ -5,14 +5,15 @@ import com.example.polls.payload.request.LoginRequest;
 import com.example.polls.payload.request.SignUpRequest;
 import com.example.polls.payload.response.ApiResponse;
 import com.example.polls.payload.response.JwtAuthenticationResponse;
-import com.example.polls.security.handler.UserAuthenticationFailureHandler;
-import com.example.polls.security.handler.UserAuthenticationSuccessHandler;
+import com.example.polls.security.event.OnAuthenticationFailureEvent;
+import com.example.polls.security.event.OnAuthenticationSuccessEvent;
 import com.example.polls.security.service.TokenProvider;
 import com.example.polls.security.service.UserAuthenticator;
 import com.example.polls.service.UserService;
-import com.example.polls.util.converter.response.RegisteredUserToResponseEntityConverter;
 import com.example.polls.util.converter.request.SignUpRequestToUserConverter;
+import com.example.polls.util.converter.response.RegisteredUserToResponseEntityConverter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
@@ -33,8 +34,7 @@ public class AuthController {
     private final SignUpRequestToUserConverter userConverter;
     private final TokenProvider tokenProvider;
     private final RegisteredUserToResponseEntityConverter responseFromUserConverter;
-    private final UserAuthenticationSuccessHandler successHandler;
-    private final UserAuthenticationFailureHandler failureHandler;
+    private final ApplicationEventPublisher eventPublisher;
 
     @PostMapping("/signin")
     public ResponseEntity<JwtAuthenticationResponse> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
@@ -42,10 +42,10 @@ public class AuthController {
             Authentication authentication = userAuthenticator.authenticate(loginRequest);
             String jwt = tokenProvider.generateToken(authentication);
             JwtAuthenticationResponse jwtResponse = new JwtAuthenticationResponse(jwt);
-            successHandler.onAuthenticationSuccess(loginRequest);
+            eventPublisher.publishEvent(new OnAuthenticationSuccessEvent(loginRequest));
             return ResponseEntity.ok(jwtResponse);
         } catch (BadCredentialsException e) {
-            failureHandler.onAuthenticationFailure(loginRequest);
+            eventPublisher.publishEvent(new OnAuthenticationFailureEvent(loginRequest));
             throw e;
         }
     }

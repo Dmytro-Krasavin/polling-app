@@ -1,0 +1,40 @@
+package com.example.polls.model;
+
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import javax.persistence.*;
+import java.time.Duration;
+import java.time.Instant;
+
+@Entity
+@Getter
+@Setter
+@NoArgsConstructor
+public class VerificationToken {
+
+    private static final int EXPIRATION_MINUTES = 60 * 24;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String token;
+
+    @OneToOne(targetEntity = User.class, fetch = FetchType.EAGER)
+    @JoinColumn(nullable = false, name = "user_id")
+    private User user;
+
+    private Instant expirationDate;
+
+    public VerificationToken(String token, User user) {
+        this.token = token;
+        this.user = user;
+        this.expirationDate = calculateExpirationDate(EXPIRATION_MINUTES);
+    }
+
+    private Instant calculateExpirationDate(int expiryTimeMinutes) {
+        return Instant.now().plus(Duration.ofMinutes(expiryTimeMinutes));
+    }
+}

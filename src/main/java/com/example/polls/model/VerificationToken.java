@@ -42,7 +42,7 @@ public class VerificationToken {
     }
 
     @PostLoad
-    private void calculateExpired() {
+    private void fillExpired() {
         this.expired = Instant.now().isAfter(expirationDate);
     }
 }

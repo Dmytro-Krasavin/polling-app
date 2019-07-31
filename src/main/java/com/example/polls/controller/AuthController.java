@@ -7,9 +7,9 @@ import com.example.polls.payload.request.LoginRequest;
 import com.example.polls.payload.request.SignUpRequest;
 import com.example.polls.payload.response.ApiResponse;
 import com.example.polls.payload.response.JwtAuthenticationResponse;
-import com.example.polls.security.event.OnAuthenticationFailureEvent;
-import com.example.polls.security.event.OnAuthenticationSuccessEvent;
-import com.example.polls.security.event.OnRegistrationCompleteEvent;
+import com.example.polls.security.event.AuthenticationFailedEvent;
+import com.example.polls.security.event.AuthenticationSuccessfulEvent;
+import com.example.polls.security.event.RegistrationCompletedEvent;
 import com.example.polls.security.service.TokenProvider;
 import com.example.polls.security.service.UserAuthenticator;
 import com.example.polls.service.UserService;
@@ -47,10 +47,10 @@ public class AuthController {
             Authentication authentication = userAuthenticator.authenticate(loginRequest);
             String jwt = tokenProvider.generateToken(authentication);
             JwtAuthenticationResponse jwtResponse = new JwtAuthenticationResponse(jwt);
-            eventPublisher.publishEvent(new OnAuthenticationSuccessEvent(loginRequest));
+            eventPublisher.publishEvent(new AuthenticationSuccessfulEvent(loginRequest));
             return ResponseEntity.ok(jwtResponse);
         } catch (BadCredentialsException e) {
-            eventPublisher.publishEvent(new OnAuthenticationFailureEvent(loginRequest));
+            eventPublisher.publishEvent(new AuthenticationFailedEvent(loginRequest));
             throw e;
         }
     }
@@ -62,7 +62,7 @@ public class AuthController {
 
         URI uri = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path("/api/auth/verifyEmail").build().toUri();
-        eventPublisher.publishEvent(new OnRegistrationCompleteEvent(user, uri));
+        eventPublisher.publishEvent(new RegistrationCompletedEvent(user, uri));
         return responseFromUserConverter.convert(user);
     }
 

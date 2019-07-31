@@ -7,12 +7,12 @@ import org.springframework.context.ApplicationEvent;
 import java.net.URI;
 
 @Getter
-public class OnRegistrationCompleteEvent extends ApplicationEvent {
+public class RegistrationCompletedEvent extends ApplicationEvent {
 
     private final User user;
     private final URI confirmationUri;
 
-    public OnRegistrationCompleteEvent(User user, URI confirmationUri) {
+    public RegistrationCompletedEvent(User user, URI confirmationUri) {
         super(user);
         this.user = user;
         this.confirmationUri = confirmationUri;

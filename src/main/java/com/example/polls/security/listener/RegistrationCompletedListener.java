@@ -1,12 +1,13 @@
 package com.example.polls.security.listener;
 
 import com.example.polls.model.User;
-import com.example.polls.security.event.OnRegistrationCompleteEvent;
+import com.example.polls.security.event.RegistrationCompletedEvent;
 import com.example.polls.service.VerificationTokenService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.ApplicationListener;
+import org.springframework.context.event.EventListener;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -15,13 +16,14 @@ import java.util.UUID;
 
 @Component
 @RequiredArgsConstructor
-public class RegistrationListener implements ApplicationListener<OnRegistrationCompleteEvent> {
+public class RegistrationCompletedListener {
 
     private final VerificationTokenService tokenService;
     private final JavaMailSender mailSender;
 
-    @Override
-    public void onApplicationEvent(OnRegistrationCompleteEvent event) {
+    @EventListener
+    @Async
+    public void onRegistrationComplete(RegistrationCompletedEvent event) {
         sendConfirmRegistrationMail(event.getUser(), event.getConfirmationUri());
     }
 

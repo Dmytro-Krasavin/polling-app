@@ -5,11 +5,11 @@ import lombok.Getter;
 import org.springframework.context.ApplicationEvent;
 
 @Getter
-public class OnAuthenticationFailureEvent extends ApplicationEvent {
+public class AuthenticationSuccessfulEvent extends ApplicationEvent {
 
     private final LoginRequest loginRequest;
 
-    public OnAuthenticationFailureEvent(LoginRequest loginRequest) {
+    public AuthenticationSuccessfulEvent(LoginRequest loginRequest) {
         super(loginRequest);
         this.loginRequest = loginRequest;
     }

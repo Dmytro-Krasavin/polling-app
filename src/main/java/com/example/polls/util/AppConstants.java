@@ -7,6 +7,4 @@ public interface AppConstants {
 
     int MAX_PAGE_SIZE = 50;
 
-    String API_BASE_URL = "http://127.0.0.1:5000/api";
-
 }

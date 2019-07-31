@@ -65,7 +65,7 @@ public class AuthController {
         URL url = new URL(request.getScheme(),
                 request.getServerName(),
                 request.getServerPort(),
-                request.getContextPath());
+                request.getContextPath().concat("/api/auth/verifyEmail"));
         eventPublisher.publishEvent(new OnRegistrationCompleteEvent(user, url));
         return responseFromUserConverter.convert(user);
     }

@@ -26,7 +26,6 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
 import java.net.URI;
-import java.time.Instant;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -71,8 +70,7 @@ public class AuthController {
         VerificationToken verificationToken = tokenService.findByToken(token)
                 .orElseThrow(() -> new BadRequestException("Invalid token"));
 
-        Instant expirationDate = verificationToken.getExpirationDate();
-        if (Instant.now().isAfter(expirationDate)) {
+        if (verificationToken.isExpired()) {
             throw new BadRequestException("Token is expired");
         }
 

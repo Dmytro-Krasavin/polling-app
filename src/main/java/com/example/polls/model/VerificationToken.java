@@ -28,6 +28,9 @@ public class VerificationToken {
 
     private Instant expirationDate;
 
+    @Transient
+    private boolean expired;
+
     public VerificationToken(String token, User user) {
         this.token = token;
         this.user = user;
@@ -36,5 +39,10 @@ public class VerificationToken {
 
     private Instant calculateExpirationDate(int expiryTimeMinutes) {
         return Instant.now().plus(Duration.ofMinutes(expiryTimeMinutes));
+    }
+
+    @PostLoad
+    private void calculateExpired() {
+        this.expired = Instant.now().isAfter(expirationDate);
     }
 }

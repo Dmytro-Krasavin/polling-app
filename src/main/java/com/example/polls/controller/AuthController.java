@@ -22,11 +22,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.net.MalformedURLException;
-import java.net.URL;
+import java.net.URI;
 import java.time.Instant;
 
 @RestController
@@ -57,16 +56,13 @@ public class AuthController {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<ApiResponse> registerUser(@RequestBody SignUpRequest signUpRequest,
-                                                    HttpServletRequest request) throws MalformedURLException {
+    public ResponseEntity<ApiResponse> registerUser(@RequestBody SignUpRequest signUpRequest) {
         User user = userConverter.convert(signUpRequest);
         user = userService.save(user);
 
-        URL url = new URL(request.getScheme(),
-                request.getServerName(),
-                request.getServerPort(),
-                request.getContextPath().concat("/api/auth/verifyEmail"));
-        eventPublisher.publishEvent(new OnRegistrationCompleteEvent(user, url));
+        URI uri = ServletUriComponentsBuilder.fromCurrentContextPath()
+                .path("/api/auth/verifyEmail").build().toUri();
+        eventPublisher.publishEvent(new OnRegistrationCompleteEvent(user, uri));
         return responseFromUserConverter.convert(user);
     }
 

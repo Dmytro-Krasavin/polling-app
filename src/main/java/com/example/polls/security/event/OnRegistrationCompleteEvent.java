@@ -4,17 +4,17 @@ import com.example.polls.model.User;
 import lombok.Getter;
 import org.springframework.context.ApplicationEvent;
 
-import java.net.URL;
+import java.net.URI;
 
 @Getter
 public class OnRegistrationCompleteEvent extends ApplicationEvent {
 
     private final User user;
-    private final URL url;
+    private final URI confirmationUri;
 
-    public OnRegistrationCompleteEvent(User user, URL url) {
+    public OnRegistrationCompleteEvent(User user, URI confirmationUri) {
         super(user);
         this.user = user;
-        this.url = url;
+        this.confirmationUri = confirmationUri;
     }
 }

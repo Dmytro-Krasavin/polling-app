@@ -12,7 +12,7 @@ import java.time.Instant;
 @Getter
 @Setter
 @NoArgsConstructor
-public class VerificationToken {
+public class EmailVerificationToken {
 
     private static final int EXPIRATION_MINUTES = 60 * 24;
 
@@ -31,7 +31,7 @@ public class VerificationToken {
     @Transient
     private boolean expired;
 
-    public VerificationToken(String token, User user) {
+    public EmailVerificationToken(String token, User user) {
         this.token = token;
         this.user = user;
         this.expirationDate = calculateExpirationDate(EXPIRATION_MINUTES);

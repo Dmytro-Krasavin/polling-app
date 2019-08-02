@@ -1,8 +1,6 @@
 package com.example.polls.controller;
 
-import com.example.polls.exception.BadRequestException;
 import com.example.polls.model.User;
-import com.example.polls.model.VerificationToken;
 import com.example.polls.payload.request.LoginRequest;
 import com.example.polls.payload.request.SignUpRequest;
 import com.example.polls.payload.response.ApiResponse;
@@ -10,21 +8,21 @@ import com.example.polls.payload.response.JwtAuthenticationResponse;
 import com.example.polls.security.event.AuthenticationFailedEvent;
 import com.example.polls.security.event.AuthenticationSuccessfulEvent;
 import com.example.polls.security.event.RegistrationCompletedEvent;
-import com.example.polls.security.service.TokenProvider;
-import com.example.polls.security.service.UserAuthenticator;
+import com.example.polls.security.service.AuthenticationService;
+import com.example.polls.security.service.VerificationService;
 import com.example.polls.service.UserService;
-import com.example.polls.service.VerificationTokenService;
 import com.example.polls.util.converter.request.SignUpRequestToUserConverter;
 import com.example.polls.util.converter.response.RegisteredUserToResponseEntityConverter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.io.IOException;
 import java.net.URI;
 
 @RestController
@@ -33,19 +31,16 @@ import java.net.URI;
 public class AuthController {
 
     private final UserService userService;
-    private final VerificationTokenService tokenService;
-    private final UserAuthenticator<LoginRequest> userAuthenticator;
+    private final VerificationService verificationService;
+    private final AuthenticationService<LoginRequest, JwtAuthenticationResponse> authenticationService;
     private final SignUpRequestToUserConverter userConverter;
-    private final TokenProvider tokenProvider;
     private final RegisteredUserToResponseEntityConverter responseFromUserConverter;
     private final ApplicationEventPublisher eventPublisher;
 
     @PostMapping("/signin")
     public ResponseEntity<JwtAuthenticationResponse> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
         try {
-            Authentication authentication = userAuthenticator.authenticate(loginRequest);
-            String jwt = tokenProvider.generateToken(authentication);
-            JwtAuthenticationResponse jwtResponse = new JwtAuthenticationResponse(jwt);
+            JwtAuthenticationResponse jwtResponse = authenticationService.authenticate(loginRequest);
             eventPublisher.publishEvent(new AuthenticationSuccessfulEvent(loginRequest));
             return ResponseEntity.ok(jwtResponse);
         } catch (BadCredentialsException e) {
@@ -59,24 +54,16 @@ public class AuthController {
         User user = userConverter.convert(signUpRequest);
         user = userService.save(user);
 
-        URI uri = ServletUriComponentsBuilder.fromCurrentContextPath()
+        URI confirmationUri = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path("/api/auth/verifyEmail").build().toUri();
-        eventPublisher.publishEvent(new RegistrationCompletedEvent(user, uri));
+        eventPublisher.publishEvent(new RegistrationCompletedEvent(user, confirmationUri));
         return responseFromUserConverter.convert(user);
     }
 
     @GetMapping("/verifyEmail")
-    public ResponseEntity<ApiResponse> verifyEmail(@RequestParam("token") String token) {
-        VerificationToken verificationToken = tokenService.findByToken(token)
-                .orElseThrow(() -> new BadRequestException("Invalid token"));
-
-        if (verificationToken.isExpired()) {
-            throw new BadRequestException("Token is expired");
-        }
-
-        User user = verificationToken.getUser();
-        user.setEmailVerified(true);
-        user = userService.save(user);
-        return responseFromUserConverter.convert(user);
+    public void verifyEmail(@RequestParam("token") String token, HttpServletResponse response) throws IOException {
+        verificationService.verifyUserEmail(token);
+        String location = ServletUriComponentsBuilder.fromCurrentContextPath().toUriString();
+        response.sendRedirect(location);
     }
 }

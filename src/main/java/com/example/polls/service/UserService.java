@@ -6,6 +6,8 @@ import java.util.Optional;
 
 public interface UserService {
 
+    Optional<User> findById(Long id);
+
     Optional<User> findByEmail(String email);
 
     Optional<User> findByUsernameOrEmail(String username, String email);
@@ -18,4 +20,11 @@ public interface UserService {
 
     boolean existsByEmail(String email);
 
+    void recordSuccessAuthentication(User user);
+
+    void recordFailedAuthenticationAttempt(User user);
+
+    void lockUser(Long id);
+
+    void unlockUser(Long id);
 }

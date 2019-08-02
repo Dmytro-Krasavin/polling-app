@@ -5,8 +5,6 @@ import com.example.polls.payload.request.LoginRequest;
 import com.example.polls.payload.request.SignUpRequest;
 import com.example.polls.payload.response.ApiResponse;
 import com.example.polls.payload.response.JwtAuthenticationResponse;
-import com.example.polls.security.event.AuthenticationFailedEvent;
-import com.example.polls.security.event.AuthenticationSuccessfulEvent;
 import com.example.polls.security.event.RegistrationCompletedEvent;
 import com.example.polls.security.service.AuthenticationService;
 import com.example.polls.security.service.VerificationService;
@@ -16,7 +14,6 @@ import com.example.polls.util.converter.response.RegisteredUserToResponseEntityC
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -39,14 +36,8 @@ public class AuthController {
 
     @PostMapping("/signin")
     public ResponseEntity<JwtAuthenticationResponse> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
-        try {
-            JwtAuthenticationResponse jwtResponse = authenticationService.authenticate(loginRequest);
-            eventPublisher.publishEvent(new AuthenticationSuccessfulEvent(loginRequest));
-            return ResponseEntity.ok(jwtResponse);
-        } catch (BadCredentialsException e) {
-            eventPublisher.publishEvent(new AuthenticationFailedEvent(loginRequest));
-            throw e;
-        }
+        JwtAuthenticationResponse jwtResponse = authenticationService.authenticate(loginRequest);
+        return ResponseEntity.ok(jwtResponse);
     }
 
     @PostMapping("/signup")

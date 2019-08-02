@@ -10,6 +10,7 @@ import com.example.polls.service.UserService;
 import com.example.polls.service.VoteService;
 import com.example.polls.util.AppConstants;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -71,5 +72,19 @@ public class UserController {
                                                        @RequestParam(value = "page", defaultValue = AppConstants.DEFAULT_PAGE_NUMBER) int page,
                                                        @RequestParam(value = "size", defaultValue = AppConstants.DEFAULT_PAGE_SIZE) int size) {
         return pollService.getPollsVotedBy(username, currentUser, page, size);
+    }
+
+    @PutMapping("/user/{id}/lock")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<ApiResponse> lockUser(@PathVariable(value = "id") Long id) {
+        userService.lockUser(id);
+        return ResponseEntity.ok(new ApiResponse(true, "User has locked successfully"));
+    }
+
+    @PutMapping("/user/{id}/unlock")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<ApiResponse> unlockUser(@PathVariable(value = "id") Long id) {
+        userService.unlockUser(id);
+        return ResponseEntity.ok(new ApiResponse(true, "User has unlocked successfully"));
     }
 }

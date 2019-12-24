@@ -7,7 +7,7 @@ import com.example.polls.payload.response.UserResponse;
 import com.example.polls.security.service.AuthenticationService;
 import com.example.polls.security.service.VerificationService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -29,9 +29,9 @@ public class AuthenticationController {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<UserResponse> registerUser(@RequestBody SignUpRequest signUpRequest) {
-        UserResponse userResponse = authenticationService.registerUser(signUpRequest);
-        return ResponseEntity.created(userResponse.getLocation()).body(userResponse);
+    @ResponseStatus(HttpStatus.CREATED)
+    public UserResponse registerUser(@RequestBody SignUpRequest signUpRequest) {
+        return authenticationService.registerUser(signUpRequest);
     }
 
     @GetMapping("/verifyEmail")

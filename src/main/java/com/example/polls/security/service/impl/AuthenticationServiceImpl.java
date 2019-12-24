@@ -25,7 +25,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private final UserService userService;
 
     private final ModelConverter<SignUpRequest, User> userRequestConverter;
-    private final ModelConverter<User, UserResponse> userResponseConverter;
 
     @Override
     public JwtAuthenticationResponse authenticateUser(LoginRequest loginRequest) {
@@ -44,6 +43,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     public UserResponse registerUser(SignUpRequest signUpRequest) {
         User user = userRequestConverter.convert(signUpRequest);
         user = userService.save(user);
-        return userResponseConverter.convert(user);
+        return new UserResponse(user.getId(), user.getUsername(), user.getName());
     }
 }

@@ -14,7 +14,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @Component
-public class PollToPollResponseConverter {
+public class PollResponseConverter {
 
     public PollResponse convert(Poll poll, Map<Long, Long> choiceVotesMap, User creator, Long choiceId) {
         Instant now = Instant.now();

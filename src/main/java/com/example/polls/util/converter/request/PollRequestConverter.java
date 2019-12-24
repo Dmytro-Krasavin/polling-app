@@ -12,7 +12,7 @@ import java.time.Duration;
 import java.time.Instant;
 
 @Component
-public class PollRequestToPollConverter implements ModelConverter<PollRequest, Poll> {
+public class PollRequestConverter implements ModelConverter<PollRequest, Poll> {
 
     @Override
     public Poll convert(PollRequest pollRequest) {

@@ -13,8 +13,8 @@ import com.example.polls.repository.VoteRepository;
 import com.example.polls.security.model.UserPrincipal;
 import com.example.polls.service.PollService;
 import com.example.polls.util.AppConstants;
-import com.example.polls.util.converter.request.PollRequestToPollConverter;
-import com.example.polls.util.converter.response.PollToPollResponseConverter;
+import com.example.polls.util.converter.request.PollRequestConverter;
+import com.example.polls.util.converter.response.PollResponseConverter;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,8 +42,8 @@ public class PollServiceImpl implements PollService {
     private final PollRepository pollRepository;
     private final VoteRepository voteRepository;
     private final UserRepository userRepository;
-    private final PollRequestToPollConverter pollRequestConverter;
-    private final PollToPollResponseConverter pollResponseConverter;
+    private final PollRequestConverter pollRequestConverter;
+    private final PollResponseConverter pollResponseConverter;
 
     @Override
     public PagedResponse<PollResponse> getAllPolls(UserPrincipal currentUser, int page, int size) {

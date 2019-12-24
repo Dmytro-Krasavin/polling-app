@@ -16,9 +16,9 @@ import java.util.stream.Collectors;
 public class ConstraintViolationExceptionHandler {
 
     @ExceptionHandler(ConstraintViolationException.class)
-    public ResponseEntity handle(ConstraintViolationException ex) {
+    public ResponseEntity<Map<String, String>> handle(ConstraintViolationException ex) {
         Map<String, String> errorMap = getErrorMapFromException(ex);
-        return new ResponseEntity<>(errorMap, HttpStatus.CONFLICT);
+        return new ResponseEntity<>(errorMap, HttpStatus.BAD_REQUEST);
     }
 
     private Map<String, String> getErrorMapFromException(ConstraintViolationException ex) {

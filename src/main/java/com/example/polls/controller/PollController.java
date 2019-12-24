@@ -1,17 +1,16 @@
 package com.example.polls.controller;
 
-import com.example.polls.model.Poll;
 import com.example.polls.payload.request.PollRequest;
 import com.example.polls.payload.request.VoteRequest;
+import com.example.polls.payload.response.ApiResponse;
 import com.example.polls.payload.response.PagedResponse;
 import com.example.polls.payload.response.PollResponse;
 import com.example.polls.security.annotation.CurrentUser;
 import com.example.polls.security.model.UserPrincipal;
 import com.example.polls.service.PollService;
 import com.example.polls.util.AppConstants;
-import com.example.polls.util.converter.response.PollToPollResponseEntityConverter;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,7 +22,6 @@ import javax.validation.Valid;
 public class PollController {
 
     private final PollService pollService;
-    private final PollToPollResponseEntityConverter pollResponseConverter;
 
     @GetMapping
     public PagedResponse<PollResponse> getPolls(@CurrentUser UserPrincipal currentUser,
@@ -34,9 +32,10 @@ public class PollController {
 
     @PostMapping
     @PreAuthorize("hasRole('ROLE_USER')")
-    public ResponseEntity<?> createPoll(@Valid @RequestBody PollRequest pollRequest) {
-        Poll poll = pollService.createPoll(pollRequest);
-        return pollResponseConverter.convert(poll);
+    @ResponseStatus(HttpStatus.CREATED)
+    public ApiResponse createPoll(@Valid @RequestBody PollRequest pollRequest) {
+        pollService.createPoll(pollRequest);
+        return new ApiResponse(true, "Poll Created Successfully");
     }
 
     @GetMapping("/{pollId}")

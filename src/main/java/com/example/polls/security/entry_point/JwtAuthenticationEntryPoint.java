@@ -1,4 +1,4 @@
-package com.example.polls.security;
+package com.example.polls.security.entry_point;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

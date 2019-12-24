@@ -5,7 +5,7 @@ import com.example.polls.payload.request.PollRequest;
 import com.example.polls.payload.request.VoteRequest;
 import com.example.polls.payload.response.PagedResponse;
 import com.example.polls.payload.response.PollResponse;
-import com.example.polls.security.UserPrincipal;
+import com.example.polls.security.model.UserPrincipal;
 
 public interface PollService {
 

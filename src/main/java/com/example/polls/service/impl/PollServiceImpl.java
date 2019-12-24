@@ -10,7 +10,7 @@ import com.example.polls.payload.response.PollResponse;
 import com.example.polls.repository.PollRepository;
 import com.example.polls.repository.UserRepository;
 import com.example.polls.repository.VoteRepository;
-import com.example.polls.security.UserPrincipal;
+import com.example.polls.security.model.UserPrincipal;
 import com.example.polls.service.PollService;
 import com.example.polls.util.AppConstants;
 import com.example.polls.util.converter.request.PollRequestToPollConverter;

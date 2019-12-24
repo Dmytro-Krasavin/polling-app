@@ -5,8 +5,8 @@ import com.example.polls.payload.request.PollRequest;
 import com.example.polls.payload.request.VoteRequest;
 import com.example.polls.payload.response.PagedResponse;
 import com.example.polls.payload.response.PollResponse;
-import com.example.polls.security.UserPrincipal;
 import com.example.polls.security.annotation.CurrentUser;
+import com.example.polls.security.model.UserPrincipal;
 import com.example.polls.service.PollService;
 import com.example.polls.util.AppConstants;
 import com.example.polls.util.converter.response.PollToPollResponseEntityConverter;
@@ -33,7 +33,7 @@ public class PollController {
     }
 
     @PostMapping
-    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity<?> createPoll(@Valid @RequestBody PollRequest pollRequest) {
         Poll poll = pollService.createPoll(pollRequest);
         return pollResponseConverter.convert(poll);
@@ -46,7 +46,7 @@ public class PollController {
     }
 
     @PostMapping("/{pollId}/votes")
-    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("hasRole('ROLE_USER')")
     public PollResponse castVote(@CurrentUser UserPrincipal currentUser,
                                  @PathVariable Long pollId,
                                  @Valid @RequestBody VoteRequest voteRequest) {

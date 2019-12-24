@@ -3,14 +3,13 @@ package com.example.polls.controller;
 import com.example.polls.exception.ResourceNotFoundException;
 import com.example.polls.model.User;
 import com.example.polls.payload.response.*;
-import com.example.polls.security.UserPrincipal;
 import com.example.polls.security.annotation.CurrentUser;
+import com.example.polls.security.model.UserPrincipal;
 import com.example.polls.service.PollService;
 import com.example.polls.service.UserService;
 import com.example.polls.service.VoteService;
 import com.example.polls.util.AppConstants;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,7 +23,7 @@ public class UserController {
     private final VoteService voteService;
 
     @GetMapping("/user/me")
-    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("hasRole('ROLE_USER')")
     public UserSummary getCurrentUser(@CurrentUser UserPrincipal currentUser) {
         return new UserSummary(currentUser.getId(), currentUser.getUsername(), currentUser.getName());
     }
@@ -42,6 +41,7 @@ public class UserController {
     }
 
     @GetMapping("/users/{username}")
+    @PreAuthorize("hasRole('ROLE_USER')")
     public UserProfile getUserProfile(@PathVariable(value = "username") String username) {
         User user = userService.findByUsername(username)
                 .orElseThrow(() -> new ResourceNotFoundException("User", "username", username));
@@ -76,15 +76,15 @@ public class UserController {
 
     @PutMapping("/user/{id}/lock")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<ApiResponse> lockUser(@PathVariable(value = "id") Long id) {
+    public ApiResponse lockUser(@PathVariable Long id) {
         userService.lockUser(id);
-        return ResponseEntity.ok(new ApiResponse(true, "User has locked successfully"));
+        return new ApiResponse(true, "User has locked successfully");
     }
 
     @PutMapping("/user/{id}/unlock")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<ApiResponse> unlockUser(@PathVariable(value = "id") Long id) {
+    public ApiResponse unlockUser(@PathVariable Long id) {
         userService.unlockUser(id);
-        return ResponseEntity.ok(new ApiResponse(true, "User has unlocked successfully"));
+        return new ApiResponse(true, "User has unlocked successfully");
     }
 }

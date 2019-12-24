@@ -1,4 +1,4 @@
-package com.example.polls.security;
+package com.example.polls.security.model;
 
 import com.example.polls.model.Role;
 import com.example.polls.model.User;
@@ -25,6 +25,8 @@ public class UserPrincipal implements UserDetails {
 
     private final String username;
 
+    private final Boolean locked;
+
     @JsonIgnore
     private final String email;
 
@@ -43,6 +45,7 @@ public class UserPrincipal implements UserDetails {
                 user.getId(),
                 user.getName(),
                 user.getUsername(),
+                user.getLocked(),
                 user.getEmail(),
                 user.getPassword(),
                 authorities
@@ -71,7 +74,7 @@ public class UserPrincipal implements UserDetails {
 
     @Override
     public boolean isAccountNonLocked() {
-        return true;
+        return !locked;
     }
 
     @Override

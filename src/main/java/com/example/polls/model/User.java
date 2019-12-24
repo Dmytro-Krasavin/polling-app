@@ -54,11 +54,13 @@ public class User extends DateAudit {
 
     private Integer failedLoginAttempts;
 
-    private Boolean locked;
+    @Column(columnDefinition = "boolean default false", nullable = false)
+    private Boolean locked = false;
 
     private Date lockedDate;
 
-    private Boolean emailVerified;
+    @Column(columnDefinition = "boolean default false", nullable = false)
+    private Boolean emailVerified = false;
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(

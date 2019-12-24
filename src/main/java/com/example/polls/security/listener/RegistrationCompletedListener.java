@@ -16,6 +16,6 @@ public class RegistrationCompletedListener {
     @EventListener
     @Async
     public void onRegistrationComplete(RegistrationCompletedEvent event) {
-        verificationService.sendConfirmRegistrationMail(event.getUser(), event.getConfirmationUri());
+        verificationService.sendConfirmRegistrationMail(event.getUserId(), event.getConfirmationUri());
     }
 }

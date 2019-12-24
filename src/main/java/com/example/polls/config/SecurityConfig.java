@@ -1,6 +1,6 @@
 package com.example.polls.config;
 
-import com.example.polls.security.JwtAuthenticationEntryPoint;
+import com.example.polls.security.entry_point.JwtAuthenticationEntryPoint;
 import com.example.polls.security.filter.JwtAuthenticationFilter;
 import com.example.polls.security.service.CustomUserDetailsService;
 import lombok.RequiredArgsConstructor;

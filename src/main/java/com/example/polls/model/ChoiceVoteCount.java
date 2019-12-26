@@ -1,14 +1,14 @@
 package com.example.polls.model;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 @Getter
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class ChoiceVoteCount {
 
-    private Long choiceId;
+    private final Long choiceId;
 
-    private Long voteCount;
+    private final Long voteCount;
 
 }

@@ -1,8 +1,9 @@
 package com.example.polls.model;
 
 import com.example.polls.model.audit.DateAudit;
+import lombok.AccessLevel;
 import lombok.Getter;
-import lombok.Setter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
@@ -14,7 +15,7 @@ import javax.persistence.*;
         })
 })
 @Getter
-@Setter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Vote extends DateAudit {
 
     @Id
@@ -33,4 +34,9 @@ public class Vote extends DateAudit {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
+    public Vote(Poll poll, Choice choice, User user) {
+        this.poll = poll;
+        this.choice = choice;
+        this.user = user;
+    }
 }

@@ -13,7 +13,6 @@ import com.example.polls.repository.VoteRepository;
 import com.example.polls.security.model.UserPrincipal;
 import com.example.polls.service.PollService;
 import com.example.polls.util.AppConstants;
-import com.example.polls.util.converter.request.PollRequestConverter;
 import com.example.polls.util.converter.response.PollResponseConverter;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -42,7 +41,6 @@ public class PollServiceImpl implements PollService {
     private final PollRepository pollRepository;
     private final VoteRepository voteRepository;
     private final UserRepository userRepository;
-    private final PollRequestConverter pollRequestConverter;
     private final PollResponseConverter pollResponseConverter;
 
     @Override
@@ -137,8 +135,7 @@ public class PollServiceImpl implements PollService {
 
     @Override
     public Poll createPoll(PollRequest pollRequest) {
-        Poll poll = pollRequestConverter.convert(pollRequest);
-        return pollRepository.save(poll);
+        return pollRepository.save(pollRequest.toPoll());
     }
 
     @Override
@@ -183,10 +180,7 @@ public class PollServiceImpl implements PollService {
                 .findFirst()
                 .orElseThrow(() -> new ResourceNotFoundException("Choice", "id", voteRequest.getChoiceId()));
 
-        Vote vote = new Vote();
-        vote.setPoll(poll);
-        vote.setUser(user);
-        vote.setChoice(selectedChoice);
+        Vote vote = new Vote(poll, selectedChoice, user);
         try {
             vote = voteRepository.save(vote);
         } catch (DataIntegrityViolationException ex) {

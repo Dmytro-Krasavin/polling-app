@@ -1,5 +1,6 @@
 package com.example.polls.model;
 
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -11,8 +12,7 @@ import java.util.Objects;
 
 @Entity
 @Getter
-@Setter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Choice {
 
     @Id
@@ -25,6 +25,7 @@ public class Choice {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "poll_id", nullable = false)
+    @Setter
     private Poll poll;
 
     public Choice(String text) {

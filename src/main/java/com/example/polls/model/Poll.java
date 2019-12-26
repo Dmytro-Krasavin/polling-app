@@ -1,8 +1,9 @@
 package com.example.polls.model;
 
 import com.example.polls.model.audit.UserDateAudit;
+import lombok.AccessLevel;
 import lombok.Getter;
-import lombok.Setter;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
@@ -18,7 +19,7 @@ import java.util.Objects;
 
 @Entity
 @Getter
-@Setter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Poll extends UserDateAudit {
 
     @Id
@@ -42,6 +43,11 @@ public class Poll extends UserDateAudit {
 
     @NotNull
     private Instant expirationDateTime;
+
+    public Poll(String question, Instant expirationDateTime) {
+        this.question = question;
+        this.expirationDateTime = expirationDateTime;
+    }
 
     public void addChoice(Choice choice) {
         choices.add(choice);

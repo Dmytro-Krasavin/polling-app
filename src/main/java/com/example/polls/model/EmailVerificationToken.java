@@ -1,8 +1,8 @@
 package com.example.polls.model;
 
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.Duration;
@@ -10,8 +10,7 @@ import java.time.Instant;
 
 @Entity
 @Getter
-@Setter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class EmailVerificationToken {
 
     private static final int EXPIRATION_MINUTES = 60 * 24;

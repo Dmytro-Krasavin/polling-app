@@ -3,6 +3,7 @@ package com.example.polls.model;
 import com.example.polls.model.audit.DateAudit;
 import com.example.polls.validation.UniqueEmail;
 import com.example.polls.validation.UniqueUsername;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.NaturalId;
@@ -17,7 +18,7 @@ import java.util.Set;
 
 @Entity
 @Getter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @UniqueUsername
 @UniqueEmail
 public class User extends DateAudit {

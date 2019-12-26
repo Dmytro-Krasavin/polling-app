@@ -47,7 +47,7 @@ public class VerificationServiceImpl implements VerificationService {
         }
 
         User user = verificationToken.getUser();
-        user.setEmailVerified(true);
+        user.verifyEmail();
         userService.save(user);
     }
 

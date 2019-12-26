@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
 import java.util.Optional;
 
 @Service
@@ -61,35 +60,32 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public void recordSuccessAuthentication(User user) {
-        user.setLastLoginDate(new Date());
+        user.newLogin();
         save(user);
     }
 
     @Override
     @Transactional
     public void recordFailedAuthenticationAttempt(User user) {
-        int failedLoginAttempts = user.getFailedLoginAttempts() != null ? user.getFailedLoginAttempts() : 0;
-        user.setFailedLoginAttempts(failedLoginAttempts + 1);
-        user.setLastFailedLoginDate(new Date());
+        user.newFailedLogin();
         save(user);
     }
 
     @Override
     @Transactional
     public void lockUser(Long id) {
-        changeUserLockStatus(id, true);
+        User user = findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("User", "id", id));
+        user.lock();
+        save(user);
     }
 
     @Override
     @Transactional
     public void unlockUser(Long id) {
-        changeUserLockStatus(id, false);
-    }
-
-    private void changeUserLockStatus(Long id, boolean locked) {
         User user = findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("User", "id", id));
-        user.setLocked(locked);
+        user.unlock();
         save(user);
     }
 }

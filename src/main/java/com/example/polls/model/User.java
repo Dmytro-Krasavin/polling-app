@@ -5,7 +5,6 @@ import com.example.polls.validation.UniqueEmail;
 import com.example.polls.validation.UniqueUsername;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.*;
@@ -18,7 +17,6 @@ import java.util.Set;
 
 @Entity
 @Getter
-@Setter
 @NoArgsConstructor
 @UniqueUsername
 @UniqueEmail
@@ -75,5 +73,30 @@ public class User extends DateAudit {
         this.email = email;
         this.password = password;
         this.roles = roles;
+    }
+
+    public void newLogin() {
+        lastLoginDate = new Date();
+    }
+
+    public void newFailedLogin() {
+        if (failedLoginAttempts == null) {
+            failedLoginAttempts = 0;
+        }
+        failedLoginAttempts++;
+        lastFailedLoginDate = new Date();
+    }
+
+    public void lock() {
+        locked = true;
+        lockedDate = new Date();
+    }
+
+    public void unlock() {
+        locked = false;
+    }
+
+    public void verifyEmail() {
+        emailVerified = true;
     }
 }

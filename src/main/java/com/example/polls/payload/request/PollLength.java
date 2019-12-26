@@ -1,21 +1,21 @@
 package com.example.polls.payload.request;
 
 import lombok.Getter;
-import lombok.Setter;
+import lombok.RequiredArgsConstructor;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.NotNull;
 
 @Getter
-@Setter
+@RequiredArgsConstructor
 public class PollLength {
 
     @NotNull
     @Max(7)
-    private Integer days;
+    private final Integer days;
 
     @NotNull
     @Max(23)
-    private Integer hours;
+    private final Integer hours;
 
 }

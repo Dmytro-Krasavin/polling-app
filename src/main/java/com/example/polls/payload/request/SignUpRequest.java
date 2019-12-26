@@ -1,31 +1,31 @@
 package com.example.polls.payload.request;
 
 import lombok.Getter;
-import lombok.Setter;
+import lombok.RequiredArgsConstructor;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 @Getter
-@Setter
+@RequiredArgsConstructor
 public class SignUpRequest {
 
     @NotBlank
     @Size(min = 4, max = 40)
-    private String name;
+    private final String name;
 
     @NotBlank
     @Size(min = 3, max = 15)
-    private String username;
+    private final String username;
 
     @NotBlank
     @Size(max = 40)
     @Email
-    private String email;
+    private final String email;
 
     @NotBlank
     @Size(min = 6, max = 20)
-    private String password;
+    private final String password;
 
 }

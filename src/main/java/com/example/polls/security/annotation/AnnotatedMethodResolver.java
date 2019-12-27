@@ -2,6 +2,7 @@ package com.example.polls.security.annotation;
 
 import org.springframework.util.CollectionUtils;
 
+import javax.annotation.Nullable;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -32,52 +33,26 @@ public class AnnotatedMethodResolver {
     }
 
     public Optional<Object> getProxyBeanWithHandlerBefore(Object bean, String beanName, Runnable invocationActionBefore) {
-        Set<String> annotatedMethods = beanNameToMethodSignatures.get(beanName);
-        if (!CollectionUtils.isEmpty(annotatedMethods)) {
-            Class<?> beanClass = bean.getClass();
-
-            InvocationHandler invocationHandler = (proxy, method, args) -> {
-                if (annotatedMethods.contains(getSignatureString(method))) {
-                    invocationActionBefore.run();
-                }
-                return method.invoke(bean, args);
-            };
-            Object proxyInstance = Proxy.newProxyInstance(beanClass.getClassLoader(), beanClass.getInterfaces(), invocationHandler);
-            return Optional.of(proxyInstance);
-        }
-        return Optional.empty();
+        return getProxyBean(bean, beanName, invocationActionBefore, null);
     }
 
     public Optional<Object> getProxyBeanWithHandlerAfter(Object bean, String beanName, Function<Object, Object> invocationActionAfter) {
-        Set<String> annotatedMethods = beanNameToMethodSignatures.get(beanName);
-        if (!CollectionUtils.isEmpty(annotatedMethods)) {
-            Class<?> beanClass = bean.getClass();
-
-            InvocationHandler invocationHandler = (proxy, method, args) -> {
-                Object returnedValue = method.invoke(bean, args);
-                if (annotatedMethods.contains(getSignatureString(method))) {
-                    return invocationActionAfter.apply(returnedValue);
-                }
-                return returnedValue;
-            };
-            Object proxyInstance = Proxy.newProxyInstance(beanClass.getClassLoader(), beanClass.getInterfaces(), invocationHandler);
-            return Optional.of(proxyInstance);
-        }
-        return Optional.empty();
+        return getProxyBean(bean, beanName, null, invocationActionAfter);
     }
 
-    public Optional<Object> getProxyBeanWithHandlers(Object bean, String beanName,
-                                                     Runnable invocationActionBefore, Function<Object, Object> invocationActionAfter) {
+    public Optional<Object> getProxyBean(Object bean, String beanName,
+                                         @Nullable Runnable invocationActionBefore, @Nullable Function<Object, Object> invocationActionAfter) {
         Set<String> annotatedMethods = beanNameToMethodSignatures.get(beanName);
         if (!CollectionUtils.isEmpty(annotatedMethods)) {
             Class<?> beanClass = bean.getClass();
 
             InvocationHandler invocationHandler = (proxy, method, args) -> {
-                if (annotatedMethods.contains(getSignatureString(method))) {
+                boolean methodAnnotated = annotatedMethods.contains(getSignatureString(method));
+                if (methodAnnotated && invocationActionBefore != null) {
                     invocationActionBefore.run();
                 }
                 Object returnedValue = method.invoke(bean, args);
-                if (annotatedMethods.contains(getSignatureString(method))) {
+                if (methodAnnotated && invocationActionAfter != null) {
                     return invocationActionAfter.apply(returnedValue);
                 }
                 return returnedValue;

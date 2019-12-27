@@ -1,7 +1,7 @@
 package com.example.polls.security.filter;
 
+import com.example.polls.security.service.CustomUserDetailsService;
 import com.example.polls.security.service.TokenProvider;
-import com.example.polls.security.service.impl.CustomUserDetailsServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,7 +28,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final TokenProvider tokenProvider;
 
-    private final CustomUserDetailsServiceImpl userDetailsService;
+    private final CustomUserDetailsService userDetailsService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {

@@ -1,4 +1,4 @@
-package com.example.polls.security.postProcessor;
+package com.example.polls.security.annotation;
 
 import com.example.polls.exception.ForbiddenException;
 import com.example.polls.security.annotation.CheckClientIP;

@@ -8,7 +8,7 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.util.*;
-import java.util.function.Function;
+import java.util.function.UnaryOperator;
 
 import static java.util.stream.Collectors.toUnmodifiableSet;
 
@@ -36,12 +36,12 @@ public class AnnotatedMethodResolver {
         return getProxyBean(bean, beanName, invocationActionBefore, null);
     }
 
-    public Optional<Object> getProxyBeanWithHandlerAfter(Object bean, String beanName, Function<Object, Object> invocationActionAfter) {
+    public Optional<Object> getProxyBeanWithHandlerAfter(Object bean, String beanName, UnaryOperator<Object> invocationActionAfter) {
         return getProxyBean(bean, beanName, null, invocationActionAfter);
     }
 
     public Optional<Object> getProxyBean(Object bean, String beanName,
-                                         @Nullable Runnable invocationActionBefore, @Nullable Function<Object, Object> invocationActionAfter) {
+                                         @Nullable Runnable invocationActionBefore, @Nullable UnaryOperator<Object> invocationActionAfter) {
         Set<String> annotatedMethods = beanNameToMethodSignatures.get(beanName);
         if (!CollectionUtils.isEmpty(annotatedMethods)) {
             Class<?> beanClass = bean.getClass();

@@ -1,6 +1,8 @@
 package com.example.polls.security.annotation;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.cglib.proxy.Enhancer;
+import org.springframework.cglib.proxy.MethodInterceptor;
 import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Nullable;
@@ -72,7 +74,23 @@ public class AnnotatedMethodResolver {
 
     private Object generateCglibInstance(Object bean, Set<String> annotatedMethods,
                                          Runnable invocationActionBefore, UnaryOperator<Object> invocationActionAfter) {
-        throw new IllegalStateException("Not implemented");
+        Class<?> beanClass = bean.getClass();
+        MethodInterceptor methodInterceptor = (obj, method, args, proxy) -> {
+            boolean methodAnnotated = isMethodAnnotated(method, annotatedMethods);
+            if (methodAnnotated && invocationActionBefore != null) {
+                invocationActionBefore.run();
+            }
+            Object returnedValue = proxy.invokeSuper(obj, args);
+            if (methodAnnotated && invocationActionAfter != null) {
+                return invocationActionAfter.apply(returnedValue);
+            }
+            return returnedValue;
+        };
+
+        Enhancer enhancer = new Enhancer();
+        enhancer.setSuperclass(beanClass);
+        enhancer.setCallback(methodInterceptor);
+        return enhancer.create();
     }
 
     private boolean isMethodAnnotated(Method method, Set<String> annotatedMethods) {

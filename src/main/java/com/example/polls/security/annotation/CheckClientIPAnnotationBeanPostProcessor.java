@@ -18,7 +18,7 @@ public class CheckClientIPAnnotationBeanPostProcessor implements BeanPostProcess
 
     @Override
     public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
-        methodResolver.putIfAnnotationPresent(bean, beanName);
+        methodResolver.registerAnnotatedMethods(bean, beanName);
         return bean;
     }
 

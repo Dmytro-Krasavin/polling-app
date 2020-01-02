@@ -21,7 +21,7 @@ public class AnnotatedMethodResolver {
         this.annotation = annotation;
     }
 
-    public void putIfAnnotationPresent(Object bean, String beanName) {
+    public void registerAnnotatedMethods(Object bean, String beanName) {
         Class<?> beanClass = bean.getClass();
         Set<String> annotatedMethods = Arrays.stream(beanClass.getDeclaredMethods())
                 .filter(method -> method.isAnnotationPresent(annotation))

@@ -2,14 +2,15 @@ package com.example.polls.validation;
 
 import com.example.polls.model.User;
 import com.example.polls.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
+@RequiredArgsConstructor
 public class UniqueEmailValidator implements ConstraintValidator<UniqueEmail, User> {
 
-    private UserService userService;
+    private final UserService userService;
 
     private String message;
 
@@ -33,10 +34,5 @@ public class UniqueEmailValidator implements ConstraintValidator<UniqueEmail, Us
             return false;
         }
         return true;
-    }
-
-    @Autowired
-    public void setUserService(UserService userService) {
-        this.userService = userService;
     }
 }

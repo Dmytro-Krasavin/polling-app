@@ -1,5 +1,6 @@
 package com.example.polls.security.annotation;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Nullable;
@@ -12,19 +13,16 @@ import java.util.function.UnaryOperator;
 
 import static java.util.stream.Collectors.toUnmodifiableSet;
 
+@RequiredArgsConstructor
 public class AnnotatedMethodResolver {
 
-    private final Class<? extends Annotation> annotation;
+    private final Class<? extends Annotation> annotationClass;
     private final Map<String, Set<String>> beanNameToMethodSignatures = new HashMap<>();
-
-    public AnnotatedMethodResolver(Class<? extends Annotation> annotation) {
-        this.annotation = annotation;
-    }
 
     public void registerAnnotatedMethods(Object bean, String beanName) {
         Class<?> beanClass = bean.getClass();
         Set<String> annotatedMethods = Arrays.stream(beanClass.getDeclaredMethods())
-                .filter(method -> method.isAnnotationPresent(annotation))
+                .filter(method -> method.isAnnotationPresent(annotationClass))
                 .map(this::getSignatureString)
                 .collect(toUnmodifiableSet());
         if (!annotatedMethods.isEmpty()) {
@@ -45,22 +43,44 @@ public class AnnotatedMethodResolver {
         Set<String> annotatedMethods = beanNameToMethodSignatures.get(beanName);
         if (!CollectionUtils.isEmpty(annotatedMethods)) {
             Class<?> beanClass = bean.getClass();
-
-            InvocationHandler invocationHandler = (proxy, method, args) -> {
-                boolean methodAnnotated = annotatedMethods.contains(getSignatureString(method));
-                if (methodAnnotated && invocationActionBefore != null) {
-                    invocationActionBefore.run();
-                }
-                Object returnedValue = method.invoke(bean, args);
-                if (methodAnnotated && invocationActionAfter != null) {
-                    return invocationActionAfter.apply(returnedValue);
-                }
-                return returnedValue;
-            };
-            Object proxyInstance = Proxy.newProxyInstance(beanClass.getClassLoader(), beanClass.getInterfaces(), invocationHandler);
+            if (hasInterface(beanClass)) {
+                Object proxyInstance = generateDynamicProxy(bean, annotatedMethods, invocationActionBefore, invocationActionAfter);
+                return Optional.of(proxyInstance);
+            }
+            Object proxyInstance = generateCglibInstance(bean, annotatedMethods, invocationActionBefore, invocationActionAfter);
             return Optional.of(proxyInstance);
         }
         return Optional.empty();
+    }
+
+    private Object generateDynamicProxy(Object bean, Set<String> annotatedMethods,
+                                        Runnable invocationActionBefore, UnaryOperator<Object> invocationActionAfter) {
+        Class<?> beanClass = bean.getClass();
+        InvocationHandler invocationHandler = (proxy, method, args) -> {
+            boolean methodAnnotated = isMethodAnnotated(method, annotatedMethods);
+            if (methodAnnotated && invocationActionBefore != null) {
+                invocationActionBefore.run();
+            }
+            Object returnedValue = method.invoke(bean, args);
+            if (methodAnnotated && invocationActionAfter != null) {
+                return invocationActionAfter.apply(returnedValue);
+            }
+            return returnedValue;
+        };
+        return Proxy.newProxyInstance(beanClass.getClassLoader(), beanClass.getInterfaces(), invocationHandler);
+    }
+
+    private Object generateCglibInstance(Object bean, Set<String> annotatedMethods,
+                                         Runnable invocationActionBefore, UnaryOperator<Object> invocationActionAfter) {
+        throw new IllegalStateException("Not implemented");
+    }
+
+    private boolean isMethodAnnotated(Method method, Set<String> annotatedMethods) {
+        return annotatedMethods.contains(getSignatureString(method));
+    }
+
+    private boolean hasInterface(Class<?> beanClass) {
+        return beanClass.getInterfaces().length > 0;
     }
 
     private String getSignatureString(Method method) {

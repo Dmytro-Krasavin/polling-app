@@ -1,1 +1,1 @@
-This is a voting app. Can be used by multiple users and with different roles.
+This is a voting app that supports multiple users with different roles.
